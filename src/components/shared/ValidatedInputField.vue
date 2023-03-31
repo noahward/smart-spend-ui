@@ -63,6 +63,7 @@ const validationListeners = computed(() => {
       <span
         v-for="err in errors"
         :key="err"
+        class="text-caption"
       >{{ err }}</span>
     </div>
   </div>
