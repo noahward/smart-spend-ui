@@ -1,7 +1,14 @@
 @import './variables';
 @import 'vuetify/styles/main.sass';
+@import './override';
 
 @import './layout/text';
 @import './layout/reboot';
+
+@import './components/VButtons';
+@import './components/VField';
+@import './components/VInput';
+@import './components/VTextField';
+@import './components/VTextArea';
 
 @import './pages/authentication';
