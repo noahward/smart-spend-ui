@@ -25,10 +25,10 @@ import LoginForm from '@/components/auth/LoginForm.vue'
         xl="4"
         class="d-flex align-center justify-center"
       >
-        <div class="mt-xl-0 mt-5 mw-100 ">
+        <div class="mt-xl-0 mt-5 w-50 ">
           <div class="d-flex justify-center">
-            <h2 class="text-h3 font-weight-regular mb-6">
-              Welcome to <span class="font-weight-bold">SmartSpend</span>
+            <h2 class="text-h3 font-weight-bold mb-4">
+              Welcome back
             </h2>
           </div>
           <LoginForm />

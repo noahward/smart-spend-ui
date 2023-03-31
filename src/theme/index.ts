@@ -35,7 +35,7 @@ const CustomLightTheme: ThemeDefinition = {
 const CustomDarkTheme: ThemeDefinition = {
   dark: true,
   variables: {
-    'border-color': '#333F55'
+    'border-color': '#465570'
   },
   colors: {
     primary: '#5D87FF',
