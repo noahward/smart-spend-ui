@@ -1,19 +1,14 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { Form } from 'vee-validate'
 import { object, string } from 'yup'
 import ValidatedInputField from '@/components/shared/ValidatedInputField.vue'
 
 import google from '@/assets/images/svgs/google-icon.svg'
-import facebook from '@/assets/images/svgs/facebook-icon.svg'
 
 const userSchema = object({
   email: string().required('Email is required').email('Enter a valid email address'),
   password: string().required('Password is required')
 })
-
-const email = ref(null)
-const password = ref(null)
 
 function onSubmit (values: object) {
   console.log('Login Info:', values)
