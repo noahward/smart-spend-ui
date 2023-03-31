@@ -12,6 +12,31 @@
     }
 }
 
+.auth-divider{
+    span{
+        z-index: 1;
+    }
+    &::before{
+        position: absolute;
+        width: 100%;
+        border-top: thin solid rgb(229, 234, 239);
+        top: 50%;
+        content: "";
+        transform: translateY(50%);
+        left: 0;
+    }
+    &::after
+    {
+        position: absolute;
+        width: 100%;
+        border-top: thin solid rgb(229, 234, 239);
+        top: 50%;
+        content: "";
+        transform: translateY(50%);
+        right: 0;
+    }
+}
+
 @media (min-width: 1536px){
     .auth{
         .v-col-lg-7{

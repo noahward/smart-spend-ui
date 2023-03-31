@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import LoginForm from '@/components/auth/LoginForm.vue'
 </script>
 
 <template>
@@ -25,20 +26,23 @@
         class="d-flex align-center justify-center"
       >
         <div class="mt-xl-0 mt-5 mw-100">
-          <h2 class="text-h3 font-weight-bold mb-2">
+          <h2 class="text-h3 font-weight-bold mb-5">
             Welcome to SmartSpend
           </h2>
-          <h6 class="text-h6 d-flex align-center mt-6 font-weight-medium">
-            New to SmartSpend?
-            <v-btn
-              class="pl-0 text-primary text-body-1 opacity-1 pl-2 font-weight-medium"
-              height="auto"
-              to=""
-              variant="plain"
-            >
-              Create an account
-            </v-btn>
-          </h6>
+          <LoginForm />
+          <div class="d-flex justify-center">
+            <div class="text-body-1 d-flex align-center mt-4 font-weight-medium">
+              Don't have an account?
+              <v-btn
+                class="pl-0 text-primary text-body-1 opacity-1 pl-2 font-weight-medium"
+                height="auto"
+                to=""
+                variant="plain"
+              >
+                Sign up
+              </v-btn>
+            </div>
+          </div>
         </div>
       </v-col>
     </v-row>
