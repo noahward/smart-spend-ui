@@ -1,2 +1,7 @@
 @import './variables';
 @import 'vuetify/styles/main.sass';
+
+@import './layout/text';
+@import './layout/reboot';
+
+@import './pages/authentication';
