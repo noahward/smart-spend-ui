@@ -14,6 +14,16 @@ export const useAuthStore = defineStore('auth', {
     user: JSON.parse(localStorage.getItem('user') || '{}'),
     returnUrl: null
   }),
+  getters: {
+    isAuthenticated (state) {
+      if (Object.keys(state.user).length === 0) {
+        return false
+      } else if (Date.parse(state.user.token.expiry) < new Date().getDate()) {
+        return false
+      }
+      return true
+    }
+  },
   actions: {
     async login (userInfo: object) {
       return api.post('/auth/login', decamelizeKeys(userInfo))
