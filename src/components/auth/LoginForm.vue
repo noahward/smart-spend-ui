@@ -1,7 +1,11 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { Form } from 'vee-validate'
+import { camelizeKeys } from 'humps'
 import { object, string } from 'yup'
+import { useAuthStore } from '@/stores/auth'
 import ValidatedInputField from '@/components/shared/ValidatedInputField.vue'
+import type { UserAPIErrors } from '@/types/user'
 
 import google from '@/assets/images/svgs/google-icon.svg'
 
@@ -10,8 +14,14 @@ const userSchema = object({
   password: string().required('Password is required')
 })
 
+const authStore = useAuthStore()
+const loginErrors = ref<UserAPIErrors>()
+
 function onSubmit (values: object) {
-  console.log('Login Info:', values)
+  authStore.login(values)
+    .catch((error) => {
+      loginErrors.value = camelizeKeys(error.response.data)
+    })
 }
 </script>
 
@@ -27,6 +37,7 @@ function onSubmit (values: object) {
     <ValidatedInputField
       name="email"
       kind="email"
+      :errors="loginErrors?.email"
     />
     <v-label class="text-subtitle-1 font-weight-semibold pb-2 text-lightText">
       Password
@@ -34,6 +45,7 @@ function onSubmit (values: object) {
     <ValidatedInputField
       name="password"
       kind="password"
+      :errors="loginErrors?.nonFieldErrors"
     />
     <div class="mt-n4 mb-6">
       <RouterLink
