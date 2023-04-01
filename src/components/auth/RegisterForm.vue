@@ -76,6 +76,11 @@ function onSubmit (values: object) {
       Sign Up
     </v-btn>
   </Form>
+  <div class="d-flex align-center text-center my-5">
+    <div class="text-h6 w-100 px-5 font-weight-regular auth-divider position-relative">
+      <span class="bg-surface px-5 position-relative text-14">or</span>
+    </div>
+  </div>
   <div class="d-flex mt-3">
     <v-btn
       variant="outlined"

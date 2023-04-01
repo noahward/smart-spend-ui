@@ -36,6 +36,31 @@
    
 }
 
+.auth-divider{
+    span{
+        z-index: 1;
+    }
+    &::before{
+        position: absolute;
+        width: 100%;
+        border-top: thin solid rgb(var(--v-theme-secondaryBorder));
+        top: 50%;
+        content: "";
+        transform: translateY(50%);
+        left: 0;
+    }
+    &::after
+    {
+        position: absolute;
+        width: 100%;
+        border-top: thin solid rgb(var(--v-theme-secondaryBorder));
+        top: 50%;
+        content: "";
+        transform: translateY(50%);
+        right: 0;
+    }
+}
+
 @media screen and (max-width:1280px){
     .mh-100{
         height: 100% !important;
