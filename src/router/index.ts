@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import AuthRoutes from './AuthRoutes'
+import MainRoutes from './MainRoutes'
 
 export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -9,7 +10,8 @@ export const router = createRouter({
       path: '/:pathMatch(.*)*',
       component: () => import('@/views/auth/Error.vue')
     },
-    AuthRoutes
+    AuthRoutes,
+    MainRoutes
   ]
 })
 
