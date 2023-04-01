@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Logo from '@/layouts/full/logo/Logo.vue'
 import LoginForm from '@/components/auth/LoginForm.vue'
 </script>
 
@@ -11,6 +12,11 @@ import LoginForm from '@/components/auth/LoginForm.vue'
         xl="8"
         class="d-lg-flex align-center justify-center authentication position-relative"
       >
+        <div class="auth-header pt-lg-6 pt-2 px-sm-6 px-3 pb-lg-6 pb-0">
+          <div class="position-relative">
+            <Logo />
+          </div>
+        </div>
         <div class="">
           <img
             src="@/assets/images/backgrounds/login-bg.svg"
