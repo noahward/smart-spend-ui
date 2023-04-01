@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import Logo from '@/layouts/full/logo/Logo.vue'
-import LoginForm from '@/components/auth/LoginForm.vue'
 </script>
 
 <template>
@@ -34,20 +33,19 @@ import LoginForm from '@/components/auth/LoginForm.vue'
         <div class="mt-xl-0 mt-5 w-50 ">
           <div class="d-flex justify-center">
             <h2 class="text-h3 font-weight-bold mb-4">
-              Welcome back
+              Make the most of your finances
             </h2>
           </div>
-          <LoginForm />
           <div class="d-flex justify-center">
             <div class="text-body-1 d-flex align-center mt-4 font-weight-medium">
-              Don't have an account?
+              Already on SmartSpend?
               <v-btn
                 class="pl-0 text-primary text-body-1 opacity-1 pl-2 font-weight-medium"
                 height="auto"
-                to="/register"
+                to="/login"
                 variant="plain"
               >
-                Sign up
+                Sign in
               </v-btn>
             </div>
           </div>
