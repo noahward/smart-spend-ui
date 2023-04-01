@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Logo from '@/layouts/full/logo/Logo.vue'
+import RegisterForm from '@/components/auth/RegisterForm.vue'
 </script>
 
 <template>
@@ -16,7 +17,7 @@ import Logo from '@/layouts/full/logo/Logo.vue'
             <Logo />
           </div>
         </div>
-        <div class="">
+        <div>
           <img
             src="@/assets/images/backgrounds/login-bg.svg"
             class="position-relative d-none d-lg-flex"
@@ -33,9 +34,10 @@ import Logo from '@/layouts/full/logo/Logo.vue'
         <div class="mt-xl-0 mt-5 w-50 ">
           <div class="d-flex justify-center">
             <h2 class="text-h3 font-weight-bold mb-4">
-              Make the most of your finances
+              Register for an account
             </h2>
           </div>
+          <RegisterForm />
           <div class="d-flex justify-center">
             <div class="text-body-1 d-flex align-center mt-4 font-weight-medium">
               Already on SmartSpend?
