@@ -21,7 +21,7 @@ router.beforeEach(async (to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (!auth.isAuthenticated) {
       auth.returnUrl = to.fullPath
-      return next('/auth/login')
+      return next('/login')
     } else next()
   } else {
     next()

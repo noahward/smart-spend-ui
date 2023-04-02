@@ -30,7 +30,7 @@ export const useAuthStore = defineStore('auth', {
         .then((response) => {
           this.user = camelizeKeys(response.data) as User
           localStorage.setItem('user', JSON.stringify(camelizeKeys(response.data)))
-          router.push(this.returnUrl || '/accounts')
+          router.push(this.returnUrl || '/dashboard')
         })
         .catch((error) => {
           throw error
@@ -41,22 +41,22 @@ export const useAuthStore = defineStore('auth', {
         .then((response) => {
           this.user = camelizeKeys(response.data) as User
           localStorage.setItem('user', JSON.stringify(camelizeKeys(response.data)))
-          router.push(this.returnUrl || '/accounts')
+          router.push(this.returnUrl || '/dashboard')
         })
         .catch((error) => {
           throw error
         })
     },
     async logout () {
-      localStorage.remove('user')
+      localStorage.removeItem('user')
       this.user = {}
-      router.push('/')
+      router.push('/login')
     },
     async updateUser (userInfo: object) {
       return api.patch('/auth/user', decamelizeKeys(userInfo))
         .then((response) => {
           this.user.profile = camelizeKeys(response.data) as UserData
-          localStorage.set('user', this.user)
+          localStorage.setItem('user', JSON.stringify(this.user))
         })
         .catch((error) => {
           throw error
