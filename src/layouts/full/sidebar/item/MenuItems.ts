@@ -1,20 +1,12 @@
 import { ChartBarIcon, BuildingBankIcon, Category2Icon, WalletIcon } from 'vue-tabler-icons'
 import type { TablerIconComponent } from 'vue-tabler-icons'
 
-export interface MenuItem {
-  header?: string;
-  title?: string;
+export type MenuItem = {
+  title: string;
+  to: string;
   icon?: TablerIconComponent;
-  to?: string;
-  chip?: string;
-  chipBgColor?: string;
-  chipColor?: string;
-  chipVariant?: string;
-  chipIcon?: string;
   children?: MenuItem[];
   disabled?: boolean;
-  type?: string;
-  subCaption?: string;
 }
 
 const baseMenuItems: MenuItem[] = [
@@ -37,7 +29,20 @@ const baseMenuItems: MenuItem[] = [
     title: 'All Accounts',
     icon: BuildingBankIcon,
     to: '/accounts',
-    children: []
+    children: [
+      {
+        title: 'TD Savings',
+        to: '/'
+      },
+      {
+        title: 'TD Chequing',
+        to: '/'
+      },
+      {
+        title: 'TD Credit Card',
+        to: '/'
+      }
+    ]
   }
 ]
 
