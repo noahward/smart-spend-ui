@@ -18,14 +18,8 @@ const preferenceStore = usePreferenceStore()
     expand-on-hover
     class="left-sidebar"
   >
-    <div class="pa-5">
-      <v-img
-        v-if="preferenceStore.miniSidebar"
-        src="src/assets/images/logos/logo-symbol.png"
-        class="logo"
-        width="40"
-      />
-      <Logo v-else />
+    <div class="pa-5 mr-6">
+      <Logo inline />
     </div>
   </v-navigation-drawer>
 </template>
