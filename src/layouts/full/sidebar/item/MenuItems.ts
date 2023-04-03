@@ -1,4 +1,4 @@
-import { ChartBarIcon, BuildingBankIcon, Category2Icon, WalletIcon } from 'vue-tabler-icons'
+import { ChartBarIcon, BuildingBankIcon, Category2Icon, WalletIcon, PointIcon } from 'vue-tabler-icons'
 import type { TablerIconComponent } from 'vue-tabler-icons'
 
 export type MenuItem = {
@@ -13,7 +13,7 @@ const baseMenuItems: MenuItem[] = [
   {
     title: 'Dashboard',
     icon: ChartBarIcon,
-    to: '/'
+    to: '/dashboard'
   },
   {
     title: 'Budget',
@@ -26,21 +26,29 @@ const baseMenuItems: MenuItem[] = [
     to: '/categorize'
   },
   {
-    title: 'All Accounts',
+    title: 'Accounts',
     icon: BuildingBankIcon,
-    to: '/accounts',
+    to: '',
     children: [
       {
+        title: 'All Accounts',
+        icon: PointIcon,
+        to: '/accounts'
+      },
+      {
         title: 'TD Savings',
-        to: '/'
+        icon: PointIcon,
+        to: '/account1'
       },
       {
         title: 'TD Chequing',
-        to: '/'
+        icon: PointIcon,
+        to: '/account1'
       },
       {
         title: 'TD Credit Card',
-        to: '/'
+        icon: PointIcon,
+        to: '/account1'
       }
     ]
   }

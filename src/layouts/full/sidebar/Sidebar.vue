@@ -34,16 +34,15 @@ const menuItems = shallowRef(baseMenuItems)
           v-for="item in menuItems"
           :key="item.title"
         >
-          <NavGroup
-            v-if="item.children"
+          <NavItem
+            v-if="item.title !== 'Accounts'"
             :item="item"
-            :level="0"
             class="left-padding"
           />
-          <NavItem
+          <NavGroup
             v-else
+            :level="0"
             :item="item"
-            class="left-padding"
           />
         </template>
       </v-list>

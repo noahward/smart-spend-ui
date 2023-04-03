@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import Icon from './ItemIcon.vue'
 import NavItem from './NavItem.vue'
-import NavGroup from './NavGroup.vue'
 import type { MenuItem } from './MenuItems'
 
 type PropTypes = { item: MenuItem, level: number }
@@ -10,7 +9,10 @@ defineProps<PropTypes>()
 </script>
 
 <template>
-  <v-list-group no-action>
+  <v-list-group
+    no-action
+    value="true"
+  >
     <template #activator="{ props }">
       <v-list-item
         v-bind="props"
@@ -34,13 +36,7 @@ defineProps<PropTypes>()
         v-for="(subitem, i) in item.children"
         :key="i"
       >
-        <NavGroup
-          v-if="subitem.children"
-          :item="subitem"
-          :level="level + 1"
-        />
         <NavItem
-          v-else
           :item="subitem"
           :level="level + 1"
         />
