@@ -2,67 +2,43 @@ import type { ThemeDefinition } from 'vuetify'
 
 const CustomLightTheme: ThemeDefinition = {
   dark: false,
-  variables: {
-    'border-color': '#e5eaef'
-  },
   colors: {
     primary: '#5D87FF',
     secondary: '#49BEFF',
-    info: '#539BFF',
-    success: '#13DEB9',
-    accent: '#FFAB91',
-    warning: '#FFAE1F',
-    error: '#FA896B',
-    lightprimary: '#ECF2FF',
-    lightsecondary: '#E8F7FF',
-    lightsuccess: '#E6FFFA',
-    lighterror: '#FDEDE8',
-    lightwarning: '#FEF5E5',
+    lightPrimary: '#ECF2FF',
+    lightSecondary: '#E8F7FF',
     textPrimary: '#2A3547',
     textSecondary: '#2A3547',
-    borderColor: '#e5eaef',
+    primaryBorder: '#e5eaef',
     secondaryBorder: '#c0cdda',
     inputBorder: '#DFE5EF',
-    containerBg: '#ffffff',
-    background: '#ffffff',
-    hoverColor: '#f6f9fc',
-    surface: '#fff',
-    'on-surface-variant': '#fff',
-    grey100: '#F2F6FA',
-    grey200: '#EAEFF4'
+    background: '#FFFFFF',
+    surface: '#FFFFFF',
+    info: '#539BFF',
+    success: '#13DEB9',
+    warning: '#FFAE1F',
+    error: '#FA896B'
   }
 }
 
 const CustomDarkTheme: ThemeDefinition = {
   dark: true,
-  variables: {
-    'border-color': '#465570'
-  },
   colors: {
     primary: '#5D87FF',
     secondary: '#49BEFF',
-    info: '#539BFF',
-    success: '#13DEB9',
-    accent: '#FA896B',
-    warning: '#FFAE1F',
-    error: '#FA896B',
-    lightprimary: '#253662',
-    lightsecondary: '#1C455D',
-    lightsuccess: '#1B3C48',
-    lighterror: '#4B313D',
-    lightwarning: '#4D3A2A',
+    lightPrimary: '#253662',
+    lightSecondary: '#1C455D',
     textPrimary: '#EAEFF4',
     textSecondary: '#7C8FAC',
-    borderColor: '#333F55',
+    primaryBorder: '#333F55',
     secondaryBorder: '#909baf',
     inputBorder: '#465670',
-    containerBg: '#2a3447',
     background: '#2a3447',
-    hoverColor: '#333f55',
     surface: '#2a3447',
-    'on-surface-variant': '#2a3447',
-    grey100: '#333F55',
-    grey200: '#465670'
+    info: '#539BFF',
+    success: '#13DEB9',
+    warning: '#FFAE1F',
+    error: '#FA896B'
   }
 }
 

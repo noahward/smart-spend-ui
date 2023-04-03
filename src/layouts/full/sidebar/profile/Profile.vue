@@ -8,7 +8,7 @@ const authStore = useAuthStore()
 <template>
   <v-sheet
     rounded="md"
-    color="lightsecondary"
+    color="lightSecondary"
     class="px-4 py-3 extra-box"
   >
     <div class="d-flex align-center hide-menu">
