@@ -1,4 +1,4 @@
-import { ChartBarIcon, BuildingBankIcon, Category2Icon, WalletIcon, PointIcon } from 'vue-tabler-icons'
+import { ChartBarIcon, BuildingBankIcon, Category2Icon, WalletIcon, PointIcon, PlusIcon } from 'vue-tabler-icons'
 import type { TablerIconComponent } from 'vue-tabler-icons'
 
 export type MenuItem = {
@@ -49,6 +49,11 @@ const baseMenuItems: MenuItem[] = [
         title: 'TD Credit Card',
         icon: PointIcon,
         to: '/account1'
+      },
+      {
+        title: 'Add Account',
+        icon: PlusIcon,
+        to: '/ss'
       }
     ]
   }

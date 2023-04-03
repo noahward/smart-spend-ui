@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Icon from './ItemIcon.vue'
 import NavItem from './NavItem.vue'
+import AddAccountItem from './AddAccountItem.vue'
 import type { MenuItem } from './MenuItems'
 
 type PropTypes = { item: MenuItem, level: number }
@@ -37,9 +38,11 @@ defineProps<PropTypes>()
         :key="i"
       >
         <NavItem
+          v-if="subitem.title !== 'Add Account'"
           :item="subitem"
           :level="level + 1"
         />
+        <AddAccountItem v-else />
       </div>
     </template>
   </v-list-group>
