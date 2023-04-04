@@ -5,7 +5,7 @@ import { ExclamationCircleIcon } from 'vue-tabler-icons'
 
 type PropTypes = {
   name: string;
-  kind: 'email' | 'password' | 'text';
+  kind: 'email' | 'password' | 'number' | 'text';
   label?: string | undefined;
   disable?: boolean;
   errors?: Array<string>;

@@ -16,7 +16,10 @@ const props = withDefaults(defineProps<PropTypes>(), {
   errors: () => []
 })
 
-const options = ['Spending', 'Saving']
+const options = [
+  { title: 'Spending', value: 'spending' },
+  { title: 'Saving', value: 'saving' }
+]
 
 const { errorMessage, value, handleChange } =
 useField<string>(
