@@ -38,12 +38,11 @@ defineProps<PropTypes>()
         :key="i"
       >
         <NavItem
-          v-if="subitem.title !== 'Add Account'"
           :item="subitem"
           :level="level + 1"
         />
-        <AddAccountItem v-else />
       </div>
+      <AddAccountItem />
     </template>
   </v-list-group>
 </template>
