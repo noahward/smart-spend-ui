@@ -1,12 +1,18 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { PlusIcon } from 'vue-tabler-icons'
 import Icon from './ItemIcon.vue'
+import CardBase from '@/components/shared/CardBase.vue'
+import AddAccount from '@/components/account/AddAccount.vue'
+
+const dialog = ref(false)
 </script>
 
 <template>
   <v-list-item
     rounded
     class="add-account mb-1"
+    @click="dialog=true"
   >
     <template #prepend>
       <Icon
@@ -15,11 +21,20 @@ import Icon from './ItemIcon.vue'
     </template>
     <v-list-item-title>Add Account</v-list-item-title>
   </v-list-item>
+  <v-dialog
+    v-model="dialog"
+    width="375"
+    persistent
+  >
+    <CardBase title="Add Account">
+      <AddAccount @close-dialog="dialog = false" />
+    </CardBase>
+  </v-dialog>
 </template>
 
 <style scoped lang="scss">
 .add-account {
-  background-color: rgb(var(--v-theme-hoverColor));
+  background-color: rgb(var(--v-theme-primaryBorder));
   cursor: pointer;
 }
 </style>
