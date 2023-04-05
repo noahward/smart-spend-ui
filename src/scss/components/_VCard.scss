@@ -1,0 +1,13 @@
+.v-card--variant-outlined {
+    border-color: rgba(var(--v-theme-primaryBorder));
+}
+
+.v-card--variant-elevated,
+.v-card--variant-flat {
+    color: rgb(var(--v-theme-textPrimary));
+}
+
+.v-card {
+    width: 100%;
+    overflow: visible;
+}
