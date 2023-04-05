@@ -40,6 +40,17 @@ const validationListeners = computed(() => {
     input: handleChange
   }
 })
+
+function isNumber (evt: KeyboardEvent) {
+  if (props.kind === 'number') {
+    const keysAllowed = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.']
+    const keyPressed = evt.key
+
+    if (!keysAllowed.includes(keyPressed)) {
+      evt.preventDefault()
+    }
+  }
+}
 </script>
 
 <template>
@@ -50,6 +61,7 @@ const validationListeners = computed(() => {
       :type="props.kind"
       :disable="props.disable"
       v-on="validationListeners"
+      @keypress="isNumber($event)"
     />
     <div
       v-if="errorMessage || errors.length !== 0"
