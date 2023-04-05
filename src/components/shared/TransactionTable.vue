@@ -53,20 +53,21 @@ const dialog = ref(false)
     <v-col
       cols="12"
       lg="4"
-      md="6"
+      sm="6"
+      class="mb-sm-5 mb-n3"
     >
       <v-text-field
         v-model="search"
         hide-details
         density="compact"
-        label="Search transactions"
+        label="Search"
         variant="outlined"
       />
     </v-col>
     <v-col
       cols="12"
       lg="8"
-      md="6"
+      sm="6"
       class="text-right"
     >
       <v-dialog

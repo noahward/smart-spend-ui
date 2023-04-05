@@ -26,8 +26,15 @@ const dialog = ref(false)
     width="375"
     persistent
   >
-    <CardBase title="Add Account">
-      <AddAccount @close-dialog="dialog = false" />
+    <CardBase>
+      <template #header>
+        <v-card-title class="text-h5">
+          All Accounts
+        </v-card-title>
+      </template>
+      <template #content>
+        <AddAccount @close-dialog="dialog = false" />
+      </template>
     </CardBase>
   </v-dialog>
 </template>

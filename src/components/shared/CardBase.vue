@@ -1,7 +1,6 @@
 <script setup lang="ts">
 type PropTypes = {
-  title: string,
-  variant: 'text' | 'flat' | 'elevated' | 'tonal' | 'outlined' | 'plain'
+  variant?: 'text' | 'flat' | 'elevated' | 'tonal' | 'outlined' | 'plain'
 }
 
 withDefaults(defineProps<PropTypes>(), { variant: 'elevated' })
@@ -10,15 +9,13 @@ withDefaults(defineProps<PropTypes>(), { variant: 'elevated' })
 <template>
   <v-card :variant="variant">
     <v-card-item class="py-4 px-6">
-      <div class="d-sm-flex align-center justify-space-between">
-        <v-card-title class="text-h5">
-          {{ title }}
-        </v-card-title>
+      <div class="align-center">
+        <slot name="header" />
       </div>
     </v-card-item>
     <v-divider />
     <v-card-text>
-      <slot />
+      <slot name="content" />
     </v-card-text>
   </v-card>
 </template>
