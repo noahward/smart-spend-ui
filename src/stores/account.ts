@@ -9,6 +9,11 @@ export const useAccountStore = defineStore('account', {
       accounts: [] as Account[]
     }
   },
+  getters: {
+    accountSelectOptions (state) {
+      return state.accounts.map(account => account.name)
+    }
+  },
   actions: {
     async getAccounts () {
       return api.get('/accounts')

@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { CreditCardIcon } from 'vue-tabler-icons'
+import { ref, computed, nextTick } from 'vue'
+import { CreditCardIcon, EditIcon, TrashXIcon } from 'vue-tabler-icons'
+import CardBase from '@/components/shared/CardBase.vue'
+import AddTransaction from '@/components/transaction/AddTransaction.vue'
 import type { Transaction } from '@/types/transaction'
 
 type PropTypes = {
@@ -10,25 +12,64 @@ type PropTypes = {
 
 const componentProps = withDefaults(defineProps<PropTypes>(), { allAccounts: false })
 
-const search = ref('')
-const dialog = ref(false)
-
-const headers = ref([
-  { title: 'Date', key: 'date' },
-  { title: 'Description', key: 'description' },
-  { title: 'Amount', key: 'amount' },
-  { title: 'Category', key: 'categoryName' }
-])
-
-if (componentProps.allAccounts) {
-  headers.value.push({ title: 'Account', key: 'account' })
-}
-
 const orderedTransactions = computed(() => {
   return [...componentProps.transactions].sort((a, b) => {
     return new Date(b.date).valueOf() - new Date(a.date).valueOf()
   })
 })
+
+const headers = ref([
+  { title: 'Date', key: 'date' },
+  { title: 'Description', key: 'description' },
+  { title: 'Amount', key: 'amount' },
+  { title: 'Category', key: 'categoryName' },
+  ...componentProps.allAccounts ? [{ title: 'Account', key: 'account' }] : [],
+  { title: 'Actions', key: 'actions', sortable: false }
+])
+
+const search = ref('')
+
+const dialogCreate = ref(false)
+const dialogEdit = ref(false)
+const dialogDelete = ref(false)
+
+const editedIdx = ref(-1)
+
+function createItem (item: Transaction) {
+  editedIdx.value = orderedTransactions.value.indexOf(item)
+  dialogCreate.value = true
+}
+
+function editItem (item: Transaction) {
+  editedIdx.value = orderedTransactions.value.indexOf(item)
+  dialogEdit.value = true
+}
+
+function deleteItem (item: Transaction) {
+  editedIdx.value = orderedTransactions.value.indexOf(item)
+  dialogDelete.value = true
+}
+
+function closeCreateDialog () {
+  dialogCreate.value = false
+  nextTick(() => {
+    editedIdx.value = -1
+  })
+}
+
+function closeEditDialog () {
+  dialogEdit.value = false
+  nextTick(() => {
+    editedIdx.value = -1
+  })
+}
+
+function closeDeleteDialog () {
+  dialogDelete.value = false
+  nextTick(() => {
+    editedIdx.value = -1
+  })
+}
 
 function formatDate (date: Date) {
   const options: Intl.DateTimeFormatOptions = {
@@ -62,26 +103,18 @@ function formatDate (date: Date) {
       sm="6"
       class="text-right"
     >
-      <v-dialog
-        v-model="dialog"
-        width="375"
-        persistent
+      <v-btn
+        color="primary"
+        flat
+        class="ml-auto"
+        @click="dialogCreate = true"
       >
-        <template #activator="{ props }">
-          <v-btn
-            color="primary"
-            v-bind="props"
-            flat
-            class="ml-auto"
-          >
-            <CreditCardIcon
-              class="mr-2"
-              size="20"
-            />
-            Add Transaction
-          </v-btn>
-        </template>
-      </v-dialog>
+        <CreditCardIcon
+          class="mr-2"
+          size="20"
+        />
+        Add Transaction
+      </v-btn>
     </v-col>
   </v-row>
   <v-data-table
@@ -99,7 +132,87 @@ function formatDate (date: Date) {
         <td v-if="allAccounts">
           {{ item.columns.account }}
         </td>
+        <td>
+          <EditIcon
+            class="mr-2 pointer"
+            size="17"
+            @click="editItem(item.raw)"
+          />
+          <TrashXIcon
+            class="pointer text-error"
+            size="17"
+            @click="deleteItem(item.raw)"
+          />
+        </td>
       </tr>
     </template>
   </v-data-table>
+
+  <v-dialog
+    v-model="dialogCreate"
+    width="375"
+  >
+    <CardBase>
+      <template #header>
+        <v-card-title class="text-h5">
+          Add Transaction
+        </v-card-title>
+      </template>
+      <template #content>
+        <div class="flex-column">
+          <AddTransaction @close-dialog="dialogCreate = false" />
+        </div>
+      </template>
+    </CardBase>
+  </v-dialog>
+
+  <v-dialog
+    v-model="dialogEdit"
+    width="375"
+  >
+    <CardBase>
+      <template #header>
+        <v-card-title class="text-h5">
+          Edit Transaction
+        </v-card-title>
+      </template>
+      <template #content>
+        <div class="flex-column">
+          Content
+        </div>
+      </template>
+    </CardBase>
+  </v-dialog>
+
+  <v-dialog
+    v-model="dialogDelete"
+    width="375"
+  >
+    <CardBase>
+      <template #header>
+        <v-card-title class="text-h5">
+          Delete Transaction?
+        </v-card-title>
+      </template>
+      <template #content>
+        <div class="mb-2">
+          <v-btn
+            flat
+            type="submit"
+            color="error"
+          >
+            Delete
+          </v-btn>
+          <v-btn
+            color="surface"
+            flat
+            class="ml-2"
+            @click="closeDeleteDialog"
+          >
+            Cancel
+          </v-btn>
+        </div>
+      </template>
+    </CardBase>
+  </v-dialog>
 </template>

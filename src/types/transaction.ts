@@ -10,3 +10,12 @@ export type Transaction = {
   categoryName: string | null;
   categoryDetailedName: string | null;
 }
+
+export type TransactionAPIErrors = {
+  date?: Array<string>;
+  description?: Array<string>;
+  amount?: Array<string>;
+  account?: Array<string>;
+  nonFieldErrors?: Array<string>;
+  detail?: string;
+}

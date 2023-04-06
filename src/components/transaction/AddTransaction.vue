@@ -1,0 +1,102 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+import { Form } from 'vee-validate'
+import { camelizeKeys } from 'humps'
+import { object, string, number, date, mixed } from 'yup'
+import { getSubmitFn } from '@/helpers/validationHelper'
+import { useAccountStore } from '@/stores/account'
+import { useTransactionStore } from '@/stores/transaction'
+import ValidatedDateField from '../shared/ValidatedDateField.vue'
+import ValidatedInputField from '../shared/ValidatedInputField.vue'
+import ValidatedSelectField from '../shared/ValidatedSelectField.vue'
+import type { TransactionAPIErrors } from '@/types/transaction'
+
+const emit = defineEmits(['inFocus', 'closeDialog'])
+
+const transactionSchema = object({
+  date: date().required('Enter a date for the transaction'),
+  description: string().required('Enter a payee description'),
+  amount: number().required('Enter an amount for the transaction'),
+  account: mixed()
+})
+
+const transactionStore = useTransactionStore()
+const { accountSelectOptions, accounts } = useAccountStore()
+
+const createErrors = ref<TransactionAPIErrors>({})
+
+const onSubmit = getSubmitFn(transactionSchema, (values) => {
+  const selectedAcc = accounts.find(acc => acc.name === values.account)
+  if (selectedAcc) {
+    values.account = selectedAcc.id
+  } else {
+    createErrors.value.account = ['Select an account']
+    return
+  }
+
+  transactionStore.addSingleTransaction(values)
+    .then(() => {
+      emit('closeDialog')
+    })
+    .catch((error) => {
+      createErrors.value = camelizeKeys(error.response.data)
+    })
+})
+</script>
+
+<template>
+  <div class="flex-column">
+    <Form
+      :validation-schema="transactionSchema"
+      @submit="onSubmit"
+    >
+      <div class="my-2">
+        <ValidatedDateField
+          name="date"
+          label="Date"
+        />
+      </div>
+      <div class="my-2">
+        <ValidatedInputField
+          name="description"
+          kind="text"
+          label="Description"
+          :errors="createErrors?.description"
+        />
+      </div>
+      <div class="my-2">
+        <ValidatedInputField
+          name="amount"
+          kind="number"
+          label="Amount"
+          :errors="createErrors?.amount"
+        />
+      </div>
+      <div class="my-2">
+        <ValidatedSelectField
+          name="account"
+          label="Account"
+          :options="accountSelectOptions"
+          :errors="createErrors?.account"
+        />
+      </div>
+      <div class="my-2">
+        <v-btn
+          flat
+          type="submit"
+          color="primary"
+        >
+          Submit
+        </v-btn>
+        <v-btn
+          color="surface"
+          flat
+          class="ml-2"
+          @click="$emit('closeDialog')"
+        >
+          Cancel
+        </v-btn>
+      </div>
+    </Form>
+  </div>
+</template>
