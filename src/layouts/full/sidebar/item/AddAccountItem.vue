@@ -29,7 +29,7 @@ const dialog = ref(false)
     <CardBase>
       <template #header>
         <v-card-title class="text-h5">
-          All Accounts
+          Add Account
         </v-card-title>
       </template>
       <template #content>
