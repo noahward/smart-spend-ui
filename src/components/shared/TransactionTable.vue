@@ -1,51 +1,43 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { CreditCardIcon } from 'vue-tabler-icons'
+import type { Transaction } from '@/types/transaction'
 
-const desserts = ref([
-  {
-    name: 'Frozen Yogurt',
-    calories: 159
-  },
-  {
-    name: 'Ice cream sandwich',
-    calories: 237
-  },
-  {
-    name: 'Eclair',
-    calories: 262
-  },
-  {
-    name: 'Cupcake',
-    calories: 305
-  },
-  {
-    name: 'Gingerbread',
-    calories: 356
-  },
-  {
-    name: 'Jelly bean',
-    calories: 375
-  },
-  {
-    name: 'Lollipop',
-    calories: 392
-  },
-  {
-    name: 'Honeycomb',
-    calories: 408
-  },
-  {
-    name: 'Donut',
-    calories: 452
-  },
-  {
-    name: 'KitKat',
-    calories: 518
-  }
-])
+type PropTypes = {
+  transactions: Transaction[],
+  allAccounts?: boolean
+}
+
+const componentProps = withDefaults(defineProps<PropTypes>(), { allAccounts: false })
+
 const search = ref('')
 const dialog = ref(false)
+
+const headers = ref([
+  { title: 'Date', key: 'date' },
+  { title: 'Description', key: 'description' },
+  { title: 'Amount', key: 'amount' },
+  { title: 'Category', key: 'categoryName' }
+])
+
+if (componentProps.allAccounts) {
+  headers.value.push({ title: 'Account', key: 'account' })
+}
+
+const orderedTransactions = computed(() => {
+  return [...componentProps.transactions].sort((a, b) => {
+    return new Date(b.date).valueOf() - new Date(a.date).valueOf()
+  })
+})
+
+function formatDate (date: Date) {
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  }
+  return new Date(date).toLocaleDateString('en-us', options)
+}
 </script>
 
 <template>
@@ -92,25 +84,22 @@ const dialog = ref(false)
       </v-dialog>
     </v-col>
   </v-row>
-  <v-table>
-    <thead>
+  <v-data-table
+    :headers="headers"
+    :items="orderedTransactions"
+    :search="search"
+    item-value="name"
+  >
+    <template #item="{ item }">
       <tr>
-        <th class="text-left text-subtitle-1 font-weight-semibold">
-          Name
-        </th>
-        <th class="text-left text-subtitle-1 font-weight-semibold">
-          Calories
-        </th>
+        <td>{{ formatDate(item.columns.date) }}</td>
+        <td>{{ item.columns.description }}</td>
+        <td>{{ item.columns.amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) }}</td>
+        <td>{{ item.columns.categoryName }}</td>
+        <td v-if="allAccounts">
+          {{ item.columns.account }}
+        </td>
       </tr>
-    </thead>
-    <tbody>
-      <tr
-        v-for="item in desserts"
-        :key="item.name"
-      >
-        <td>{{ item.name }}</td>
-        <td>{{ item.calories }}</td>
-      </tr>
-    </tbody>
-  </v-table>
+    </template>
+  </v-data-table>
 </template>
