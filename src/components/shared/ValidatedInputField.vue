@@ -5,7 +5,7 @@ import { ExclamationCircleIcon } from 'vue-tabler-icons'
 
 type PropTypes = {
   name: string;
-  kind: 'email' | 'password' | 'number' | 'text';
+  kind: 'email' | 'password' | 'number' | 'text' | 'date';
   label?: string | undefined;
   disable?: boolean;
   errors?: Array<string>;
@@ -28,8 +28,8 @@ const validationListeners = computed(() => {
   // Lazy
   if (!errorMessage.value) {
     return {
-      blur: handleChange,
-      change: handleChange,
+      blur: (e: Event) => handleChange(e, false),
+      change: (e: Event) => handleChange(e, false),
       input: (e: Event) => handleChange(e, false)
     }
   }

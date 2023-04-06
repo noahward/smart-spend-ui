@@ -6,7 +6,6 @@ import { object, string, number, date, mixed } from 'yup'
 import { getSubmitFn } from '@/helpers/validationHelper'
 import { useAccountStore } from '@/stores/account'
 import { useTransactionStore } from '@/stores/transaction'
-import ValidatedDateField from '../shared/ValidatedDateField.vue'
 import ValidatedInputField from '../shared/ValidatedInputField.vue'
 import ValidatedSelectField from '../shared/ValidatedSelectField.vue'
 import type { TransactionAPIErrors } from '@/types/transaction'
@@ -16,7 +15,7 @@ const emit = defineEmits(['inFocus', 'closeDialog'])
 const transactionSchema = object({
   date: date().required('Enter a date for the transaction'),
   description: string().required('Enter a payee description'),
-  amount: number().required('Enter an amount for the transaction'),
+  amount: number().typeError('Amount must be a number').required('Enter an amount for the transaction'),
   account: mixed()
 })
 
@@ -48,11 +47,13 @@ const onSubmit = getSubmitFn(transactionSchema, (values) => {
   <div class="flex-column">
     <Form
       :validation-schema="transactionSchema"
+      :initial-values="{ date: new Date() }"
       @submit="onSubmit"
     >
       <div class="my-2">
-        <ValidatedDateField
+        <ValidatedInputField
           name="date"
+          kind="date"
           label="Date"
         />
       </div>
