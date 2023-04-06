@@ -13,7 +13,7 @@ import type { TransactionAPIErrors } from '@/types/transaction'
 const emit = defineEmits(['inFocus', 'closeDialog'])
 
 const transactionSchema = object({
-  date: date().required('Enter a date for the transaction'),
+  date: date().typeError('Enter a date for the transaction').required('Enter a date for the transaction'),
   description: string().required('Enter a payee description'),
   amount: number().typeError('Amount must be a number').required('Enter an amount for the transaction'),
   account: mixed()

@@ -23,7 +23,7 @@ const headers = ref([
   { title: 'Description', key: 'description' },
   { title: 'Amount', key: 'amount' },
   { title: 'Category', key: 'categoryName' },
-  ...componentProps.allAccounts ? [{ title: 'Account', key: 'account' }] : [],
+  ...componentProps.allAccounts ? [{ title: 'Account', key: 'accountName' }] : [],
   { title: 'Actions', key: 'actions', sortable: false }
 ])
 
@@ -130,7 +130,7 @@ function formatDate (date: Date) {
         <td>{{ item.columns.amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) }}</td>
         <td>{{ item.columns.categoryName }}</td>
         <td v-if="allAccounts">
-          {{ item.columns.account }}
+          {{ item.columns.accountName }}
         </td>
         <td>
           <EditIcon

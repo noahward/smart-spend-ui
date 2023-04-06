@@ -7,6 +7,7 @@ export type Transaction = {
   dateClassified: string | null;
   user: number;
   account: number;
+  accountName: string;
   categoryName: string | null;
   categoryDetailedName: string | null;
 }
