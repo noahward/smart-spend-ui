@@ -13,7 +13,7 @@ const emit = defineEmits(['inFocus', 'closeDialog'])
 const accountSchema = object({
   name: string().required('Add a name for your account'),
   kind: string().required('Select an account type'),
-  balance: number().typeError('Balance must be a number').required('Enter the account starting balance')
+  initialBalance: number().typeError('Balance must be a number').required('Enter the account starting balance')
 })
 
 const accountStore = useAccountStore()
@@ -59,10 +59,10 @@ const accountOptions = [
       </div>
       <div class="my-2">
         <ValidatedInputField
-          name="balance"
+          name="initialBalance"
           kind="number"
           label="Initial Balance"
-          :errors="createErrors?.balance"
+          :errors="createErrors?.initialBalance"
         />
       </div>
       <div class="my-2">
