@@ -28,6 +28,11 @@ function onSubmit (values: object) {
       createErrors.value = camelizeKeys(error.response.data)
     })
 }
+
+const accountOptions = [
+  { title: 'Spending', value: 'spending' },
+  { title: 'Saving', value: 'saving' }
+]
 </script>
 
 <template>
@@ -48,6 +53,7 @@ function onSubmit (values: object) {
         <ValidatedSelectField
           name="kind"
           label="Type"
+          :options="accountOptions"
           :errors="createErrors?.kind"
         />
       </div>

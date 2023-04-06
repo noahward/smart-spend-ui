@@ -5,6 +5,7 @@ import { ExclamationCircleIcon } from 'vue-tabler-icons'
 
 type PropTypes = {
   name: string;
+  options: Array<object | string>;
   label?: string | undefined;
   disable?: boolean;
   errors?: Array<string>;
@@ -15,11 +16,6 @@ const props = withDefaults(defineProps<PropTypes>(), {
   disable: false,
   errors: () => []
 })
-
-const options = [
-  { title: 'Spending', value: 'spending' },
-  { title: 'Saving', value: 'saving' }
-]
 
 const { errorMessage, value, handleChange } =
 useField<string>(
