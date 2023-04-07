@@ -23,14 +23,12 @@ const MainRoutes = {
     {
       name: 'Accounts',
       path: '/accounts',
-      component: () => import('@/views/main/Accounts.vue'),
-      children: [
-        {
-          name: 'Account',
-          path: '/accounts/:id',
-          component: () => import('@/views/main/Accounts.vue')
-        }
-      ]
+      component: () => import('@/views/main/AccountsAll.vue')
+    },
+    {
+      name: 'Account',
+      path: '/accounts/:id',
+      component: () => import('@/views/main/AccountSpecific.vue')
     }
   ]
 }
