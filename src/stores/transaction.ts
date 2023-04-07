@@ -25,6 +25,7 @@ export const useTransactionStore = defineStore('transaction', {
         .then((response) => {
           const accountStore = useAccountStore()
           const transaction = decamelizeKeys(response.data) as Transaction
+          console.log(transaction)
           accountStore.updateAccountBalance(transaction.account, transaction.amount, 'add')
           this.transactions.push(transaction)
         })
