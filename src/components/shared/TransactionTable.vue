@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref, computed, nextTick } from 'vue'
 import { CreditCardIcon, EditIcon, TrashXIcon } from 'vue-tabler-icons'
+import { useTransactionStore } from '@/stores/transaction'
 import CardBase from '@/components/shared/CardBase.vue'
 import AddTransaction from '@/components/transaction/AddTransaction.vue'
-import type { Transaction } from '@/types/transaction'
+import type { Transaction, TransactionAPIErrors } from '@/types/transaction'
 
 type PropTypes = {
   transactions: Transaction[],
@@ -11,6 +12,7 @@ type PropTypes = {
 }
 
 const componentProps = withDefaults(defineProps<PropTypes>(), { allAccounts: false })
+const transactionStore = useTransactionStore()
 
 const orderedTransactions = computed(() => {
   return [...componentProps.transactions].sort((a, b) => {
@@ -33,42 +35,40 @@ const dialogCreate = ref(false)
 const dialogEdit = ref(false)
 const dialogDelete = ref(false)
 
-const editedIdx = ref(-1)
-
-function createItem (item: Transaction) {
-  editedIdx.value = orderedTransactions.value.indexOf(item)
-  dialogCreate.value = true
-}
+const modifiedItem = ref()
 
 function editItem (item: Transaction) {
-  editedIdx.value = orderedTransactions.value.indexOf(item)
+  modifiedItem.value = item
   dialogEdit.value = true
 }
 
 function deleteItem (item: Transaction) {
-  editedIdx.value = orderedTransactions.value.indexOf(item)
+  modifiedItem.value = item
   dialogDelete.value = true
-}
-
-function closeCreateDialog () {
-  dialogCreate.value = false
-  nextTick(() => {
-    editedIdx.value = -1
-  })
 }
 
 function closeEditDialog () {
   dialogEdit.value = false
   nextTick(() => {
-    editedIdx.value = -1
+    modifiedItem.value = null
   })
 }
 
 function closeDeleteDialog () {
   dialogDelete.value = false
   nextTick(() => {
-    editedIdx.value = -1
+    modifiedItem.value = -1
   })
+}
+
+async function confirmDelete () {
+  return transactionStore.deleteTransaction(modifiedItem.value)
+    .then(() => {
+      closeDeleteDialog()
+    })
+    .catch((error) => {
+      console.error(error)
+    })
 }
 
 function formatDate (date: Date) {
@@ -200,6 +200,7 @@ function formatDate (date: Date) {
             flat
             type="submit"
             color="error"
+            @click="confirmDelete"
           >
             Delete
           </v-btn>

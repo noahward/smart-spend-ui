@@ -12,6 +12,13 @@ export type Transaction = {
   categoryDetailedName: string | null;
 }
 
+export type TransactionCreate = {
+  date: string;
+  description: string;
+  amount: number;
+  account: number;
+}
+
 export type TransactionAPIErrors = {
   date?: Array<string>;
   description?: Array<string>;

@@ -46,6 +46,16 @@ export const useAccountStore = defineStore('account', {
         .catch((error) => {
           throw error
         })
+    },
+    updateAccountBalance (accountId: number, amount: number, action: 'add' | 'remove') {
+      const target = this.accounts.find((obj) => obj.id === accountId)
+      if (target) {
+        if (action === 'add') {
+          target.balance = target.balance + amount
+        } else {
+          target.balance = target.balance - amount
+        }
+      }
     }
   }
 })
