@@ -1,36 +1,62 @@
 <script setup lang="ts">
-import { ref, computed, nextTick } from 'vue'
-import { CreditCardIcon, EditIcon, TrashXIcon } from 'vue-tabler-icons'
+import { ref, computed, nextTick, onMounted } from 'vue'
+import { CreditCardIcon, EditIcon, TrashXIcon, DeviceFloppyIcon, XIcon } from 'vue-tabler-icons'
+import { useCategoryStore } from '@/stores/category'
 import { useTransactionStore } from '@/stores/transaction'
 import CardBase from '@/components/shared/CardBase.vue'
 import AddTransaction from '@/components/transaction/AddTransaction.vue'
 import EditTransaction from '@/components/transaction/EditTransaction.vue'
 import type { Transaction } from '@/types/transaction'
+import { number } from 'yup'
 
 type PropTypes = {
   transactions: Transaction[],
   allAccounts?: boolean
 }
 
+const categoryStore = useCategoryStore()
+
+onMounted(() => {
+  categoryStore.getCategories()
+    .catch((error) => {
+      console.error(error)
+    })
+})
+
 const componentProps = withDefaults(defineProps<PropTypes>(), { allAccounts: false })
 const transactionStore = useTransactionStore()
 
 const orderedTransactions = computed(() => {
-  return [...componentProps.transactions].sort((a, b) => {
+  const transactionsCopy = componentProps.transactions.map(itm => { return { ...itm } })
+  return transactionsCopy.sort((a, b) => {
     return new Date(b.date).valueOf() - new Date(a.date).valueOf()
   })
 })
 
 const headers = ref([
-  { title: 'Date', key: 'date' },
+  { title: 'Date', key: 'date', width: '15%' },
   { title: 'Description', key: 'description' },
-  { title: 'Amount', key: 'amount' },
-  { title: 'Category', key: 'categoryName' },
+  { title: 'Amount', key: 'amount', width: '15%' },
+  { title: 'Category', key: 'categoryName', width: '23%' },
   ...componentProps.allAccounts ? [{ title: 'Account', key: 'accountName' }] : [],
-  { title: 'Actions', key: 'actions', sortable: false }
+  { title: 'Actions', key: 'actions', sortable: false, width: '10%' }
 ])
 
 const search = ref('')
+
+interface DefaultEditCategory {
+  id: number | null | undefined;
+  originalCategory: string | null | undefined;
+  newCategory: string | null | undefined;
+}
+
+const defaultEditCategory: DefaultEditCategory = {
+  id: null,
+  originalCategory: null,
+  newCategory: null
+}
+
+const editCategory = ref(defaultEditCategory)
 
 const dialogCreate = ref(false)
 const dialogEdit = ref(false)
@@ -72,6 +98,34 @@ async function confirmDelete () {
     })
 }
 
+function selectCategory (item: any, newCategory: string) {
+  const originalCategory = componentProps.transactions.find((obj) => obj.id === item.raw.id)?.categoryName
+  editCategory.value = {
+    id: item.raw.id,
+    newCategory,
+    originalCategory
+  }
+}
+
+async function confirmUpdateCategory (item: any) {
+  const catId = categoryStore.categories.find((cat) => cat.name === item.raw.categoryName)?.id
+  if (catId) {
+    item.raw.category = catId
+  }
+  return transactionStore.updateTransaction(item.raw)
+    .then(() => {
+      editCategory.value = defaultEditCategory
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+}
+
+function closeCategorySelect (item: any) {
+  item.raw.categoryName = editCategory.value.originalCategory
+  editCategory.value = defaultEditCategory
+}
+
 function formatDate (date: Date) {
   const options: Intl.DateTimeFormatOptions = {
     year: 'numeric',
@@ -80,6 +134,7 @@ function formatDate (date: Date) {
   }
   return new Date(date + 'T00:00').toLocaleDateString('en', options)
 }
+
 </script>
 
 <template>
@@ -129,7 +184,32 @@ function formatDate (date: Date) {
         <td>{{ formatDate(item.columns.date) }}</td>
         <td>{{ item.columns.description }}</td>
         <td>{{ item.columns.amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) }}</td>
-        <td>{{ item.columns.categoryName }}</td>
+        <td>
+          <div class="d-flex align-center">
+            <v-select
+              v-model="item.raw.categoryName"
+              :items="categoryStore.categorySelectOptions"
+              density="compact"
+              hide-details
+              @update:model-value="selectCategory(item, $event)"
+            />
+            <div
+              v-if="editCategory.id === item.raw.id"
+              class="d-flex align-center"
+            >
+              <DeviceFloppyIcon
+                size="17"
+                class="ml-2 text-success pointer"
+                @click="confirmUpdateCategory(item)"
+              />
+              <XIcon
+                size="17"
+                class="ml-1 text-error pointer"
+                @click="closeCategorySelect(item)"
+              />
+            </div>
+          </div>
+        </td>
         <td v-if="allAccounts">
           {{ item.columns.accountName }}
         </td>
