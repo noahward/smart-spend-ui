@@ -4,7 +4,8 @@ import { CreditCardIcon, EditIcon, TrashXIcon } from 'vue-tabler-icons'
 import { useTransactionStore } from '@/stores/transaction'
 import CardBase from '@/components/shared/CardBase.vue'
 import AddTransaction from '@/components/transaction/AddTransaction.vue'
-import type { Transaction, TransactionAPIErrors } from '@/types/transaction'
+import EditTransaction from '@/components/transaction/EditTransaction.vue'
+import type { Transaction } from '@/types/transaction'
 
 type PropTypes = {
   transactions: Transaction[],
@@ -77,7 +78,7 @@ function formatDate (date: Date) {
     month: 'short',
     day: 'numeric'
   }
-  return new Date(date).toLocaleDateString('en-us', options)
+  return new Date(date + 'T00:00').toLocaleDateString('en', options)
 }
 </script>
 
@@ -177,9 +178,11 @@ function formatDate (date: Date) {
         </v-card-title>
       </template>
       <template #content>
-        <div class="flex-column">
-          Content
-        </div>
+        <EditTransaction
+          v-if="dialogEdit"
+          :initial-values="modifiedItem"
+          @close-dialog="closeEditDialog"
+        />
       </template>
     </CardBase>
   </v-dialog>

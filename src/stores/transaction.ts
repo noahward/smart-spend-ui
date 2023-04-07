@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { camelizeKeys, decamelizeKeys } from 'humps'
 import { api } from '@/api'
 import { useAccountStore } from '@/stores/account'
-import type { Transaction, TransactionCreate } from '@/types/transaction'
+import type { Transaction, TransactionCreate, TransactionUpdate } from '@/types/transaction'
 
 export const useTransactionStore = defineStore('transaction', {
   state: () => {
@@ -27,6 +27,22 @@ export const useTransactionStore = defineStore('transaction', {
           const transaction = decamelizeKeys(response.data) as Transaction
           accountStore.updateAccountBalance(transaction.account, transaction.amount, 'add')
           this.transactions.push(transaction)
+        })
+        .catch((error) => {
+          throw error
+        })
+    },
+    async updateTransaction (transaction: TransactionUpdate) {
+      return api.patch(`/transactions/${transaction.id}`, decamelizeKeys(transaction))
+        .then((response) => {
+          const accountStore = useAccountStore()
+          accountStore.getAccounts()
+
+          const updTransaction = camelizeKeys(response.data) as Transaction
+          const target = this.transactions.find((obj) => obj.id === updTransaction.id)
+          if (target) {
+            Object.assign(target, updTransaction)
+          }
         })
         .catch((error) => {
           throw error

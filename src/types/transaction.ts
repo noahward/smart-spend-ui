@@ -9,7 +9,6 @@ export type Transaction = {
   account: number;
   accountName: string;
   categoryName: string | null;
-  categoryDetailedName: string | null;
 }
 
 export type TransactionCreate = {
@@ -17,6 +16,15 @@ export type TransactionCreate = {
   description: string;
   amount: number;
   account: number;
+}
+
+export type TransactionUpdate = {
+  id: number;
+  date?: string;
+  description?: string;
+  amount?: number;
+  account?: number;
+  categoryName?: string;
 }
 
 export type TransactionAPIErrors = {

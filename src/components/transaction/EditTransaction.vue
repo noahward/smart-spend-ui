@@ -10,35 +10,46 @@ import ValidatedInputField from '../shared/ValidatedInputField.vue'
 import ValidatedSelectField from '../shared/ValidatedSelectField.vue'
 import type { TransactionAPIErrors } from '@/types/transaction'
 
+type PropTypes = {
+  initialValues: object
+}
+
+defineProps<PropTypes>()
+
 const emit = defineEmits(['inFocus', 'closeDialog'])
 
 const transactionSchema = object({
-  date: date().typeError('Enter a date for the transaction').required('Enter a date for the transaction'),
-  description: string().required('Enter a payee description'),
-  amount: number().typeError('Amount must be a number').required('Enter an amount for the transaction'),
-  account: mixed()
+  date: date().typeError('Enter a date for the transaction'),
+  description: string(),
+  amount: number().typeError('Amount must be a number'),
+  accountName: mixed()
 })
 
 const transactionStore = useTransactionStore()
 const { accountSelectOptions, accounts } = useAccountStore()
 
-const createErrors = ref<TransactionAPIErrors>({})
+const updateErrors = ref<TransactionAPIErrors>({})
 
 const onSubmit = getSubmitFn(transactionSchema, (values: any) => {
-  const selectedAcc = accounts.find(acc => acc.name === values.account)
-  if (selectedAcc) {
-    values.account = selectedAcc.id
-  } else {
-    createErrors.value.account = ['Select an account']
-    return
+  if (values.accountName) {
+    const selectedAcc = accounts.find(acc => acc.name === values.accountName)
+    if (selectedAcc) {
+      delete values.accountName
+      values.account = selectedAcc.id
+    } else {
+      updateErrors.value.account = ['Select an account']
+      return
+    }
   }
 
-  transactionStore.addSingleTransaction(values)
+  console.log('Values: ', values)
+
+  transactionStore.updateTransaction(values)
     .then(() => {
       emit('closeDialog')
     })
     .catch((error) => {
-      createErrors.value = camelizeKeys(error.response.data)
+      updateErrors.value = camelizeKeys(error.response.data)
     })
 })
 </script>
@@ -47,7 +58,7 @@ const onSubmit = getSubmitFn(transactionSchema, (values: any) => {
   <div class="flex-column">
     <Form
       :validation-schema="transactionSchema"
-      :initial-values="{ date: new Date() }"
+      :initial-values="initialValues"
       @submit="onSubmit"
     >
       <div class="my-2">
@@ -62,7 +73,7 @@ const onSubmit = getSubmitFn(transactionSchema, (values: any) => {
           name="description"
           kind="text"
           label="Description"
-          :errors="createErrors?.description"
+          :errors="updateErrors?.description"
         />
       </div>
       <div class="my-2">
@@ -70,15 +81,15 @@ const onSubmit = getSubmitFn(transactionSchema, (values: any) => {
           name="amount"
           kind="number"
           label="Amount"
-          :errors="createErrors?.amount"
+          :errors="updateErrors?.amount"
         />
       </div>
       <div class="my-2">
         <ValidatedSelectField
-          name="account"
+          name="accountName"
           label="Account"
           :options="accountSelectOptions"
-          :errors="createErrors?.account"
+          :errors="updateErrors?.account"
         />
       </div>
       <div class="my-2">
