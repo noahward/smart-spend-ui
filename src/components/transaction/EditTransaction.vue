@@ -5,6 +5,7 @@ import { camelizeKeys } from 'humps'
 import { object, string, number, date, mixed } from 'yup'
 import { getSubmitFn } from '@/helpers/validationHelper'
 import { useAccountStore } from '@/stores/account'
+import { useCategoryStore } from '@/stores/category'
 import { useTransactionStore } from '@/stores/transaction'
 import ValidatedInputField from '@/components/shared/validators/ValidatedInputField.vue'
 import ValidatedSelectField from '@/components/shared/validators/ValidatedSelectField.vue'
@@ -22,10 +23,12 @@ const transactionSchema = object({
   date: date().typeError('Enter a date for the transaction'),
   description: string(),
   amount: number().typeError('Amount must be a number'),
+  categoryName: mixed(),
   accountName: mixed()
 })
 
 const transactionStore = useTransactionStore()
+const { categorySelectOptions, categories } = useCategoryStore()
 const { accountSelectOptions, accounts } = useAccountStore()
 
 const updateErrors = ref<TransactionAPIErrors>({})
@@ -42,7 +45,16 @@ const onSubmit = getSubmitFn(transactionSchema, (values: any) => {
     }
   }
 
-  console.log('Values: ', values)
+  if (values.categoryName) {
+    const selectedCat = categories.find(cat => cat.name === values.categoryName)
+    if (selectedCat) {
+      delete values.categoryName
+      values.category = selectedCat.id
+    } else {
+      updateErrors.value.account = ['Select a category']
+      return
+    }
+  }
 
   transactionStore.updateTransaction(values)
     .then(() => {
@@ -82,6 +94,14 @@ const onSubmit = getSubmitFn(transactionSchema, (values: any) => {
           kind="number"
           label="Amount"
           :errors="updateErrors?.amount"
+        />
+      </div>
+      <div class="my-2">
+        <ValidatedSelectField
+          name="categoryName"
+          label="Category"
+          :options="categorySelectOptions"
+          :errors="updateErrors?.category"
         />
       </div>
       <div class="my-2">

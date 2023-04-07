@@ -7,7 +7,6 @@ import CardBase from '@/components/shared/CardBase.vue'
 import AddTransaction from '@/components/transaction/AddTransaction.vue'
 import EditTransaction from '@/components/transaction/EditTransaction.vue'
 import type { Transaction } from '@/types/transaction'
-import { number } from 'yup'
 
 type PropTypes = {
   transactions: Transaction[],

@@ -32,6 +32,7 @@ export type TransactionAPIErrors = {
   description?: Array<string>;
   amount?: Array<string>;
   account?: Array<string>;
+  category?: Array<string>;
   nonFieldErrors?: Array<string>;
   detail?: string;
 }
