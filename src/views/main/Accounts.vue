@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, computed } from 'vue'
+import { onMounted } from 'vue'
 import { useAccountStore } from '@/stores/account'
 import { useTransactionStore } from '@/stores/transaction'
 import CardBase from '@/components/shared/CardBase.vue'
@@ -15,17 +15,6 @@ onMounted(() => {
       console.error(error)
     })
 })
-
-const totalBalance = computed(() => {
-  // TODO: Filter by currency, once currency is supported
-  let total = 0
-
-  accountStore.accounts.forEach(account => {
-    total += account.balance
-  })
-
-  return total
-})
 </script>
 
 <template>
@@ -37,9 +26,9 @@ const totalBalance = computed(() => {
           <template #header>
             <v-card-title
               class="text-h5"
-              :class="totalBalance >= 0 ? 'text-success' : 'text-error'"
+              :class="accountStore.getTotalBalance >= 0 ? 'text-success' : 'text-error'"
             >
-              {{ totalBalance.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) }}
+              {{ accountStore.getTotalBalance.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) }}
             </v-card-title>
             <v-card-subtitle class="mt-1">
               All Accounts

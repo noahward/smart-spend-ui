@@ -10,6 +10,11 @@ export const useAccountStore = defineStore('account', {
     }
   },
   getters: {
+    getTotalBalance (state) {
+      return state.accounts
+        .map(acc => acc.balance)
+        .reduce((sum, balance) => sum + balance, 0)
+    },
     accountSelectOptions (state) {
       return state.accounts.map(account => account.name)
     }
