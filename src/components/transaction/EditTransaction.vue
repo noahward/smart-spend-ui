@@ -6,8 +6,8 @@ import { object, string, number, date, mixed } from 'yup'
 import { getSubmitFn } from '@/helpers/validationHelper'
 import { useAccountStore } from '@/stores/account'
 import { useTransactionStore } from '@/stores/transaction'
-import ValidatedInputField from '../shared/ValidatedInputField.vue'
-import ValidatedSelectField from '../shared/ValidatedSelectField.vue'
+import ValidatedInputField from '@/components/shared/validators/ValidatedInputField.vue'
+import ValidatedSelectField from '@/components/shared/validators/ValidatedSelectField.vue'
 import type { TransactionAPIErrors } from '@/types/transaction'
 
 type PropTypes = {

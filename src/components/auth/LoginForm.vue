@@ -4,7 +4,7 @@ import { Form } from 'vee-validate'
 import { camelizeKeys } from 'humps'
 import { object, string } from 'yup'
 import { useAuthStore } from '@/stores/auth'
-import ValidatedInputField from '@/components/shared/ValidatedInputField.vue'
+import ValidatedInputField from '@/components/shared/validators/ValidatedInputField.vue'
 import type { UserAPIErrors } from '@/types/user'
 
 import google from '@/assets/images/svgs/google-icon.svg'

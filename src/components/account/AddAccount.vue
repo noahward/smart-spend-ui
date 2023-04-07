@@ -4,8 +4,8 @@ import { Form } from 'vee-validate'
 import { camelizeKeys } from 'humps'
 import { object, string, number } from 'yup'
 import { useAccountStore } from '@/stores/account'
-import ValidatedInputField from '../shared/ValidatedInputField.vue'
-import ValidatedSelectField from '../shared/ValidatedSelectField.vue'
+import ValidatedInputField from '@/components/shared/validators/ValidatedInputField.vue'
+import ValidatedSelectField from '@/components/shared/validators/ValidatedSelectField.vue'
 import type { AccountAPIErrors } from '@/types/account'
 
 const emit = defineEmits(['inFocus', 'closeDialog'])
