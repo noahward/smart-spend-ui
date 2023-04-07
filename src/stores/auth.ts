@@ -18,8 +18,6 @@ export const useAuthStore = defineStore('auth', {
     isAuthenticated (state) {
       if (Object.keys(state.user).length === 0) {
         return false
-      } else if (new Date(state.user.token.expiry) < new Date()) {
-        return false
       }
       return true
     }
