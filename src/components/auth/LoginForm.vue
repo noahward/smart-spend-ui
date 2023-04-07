@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { Form } from 'vee-validate'
 import { camelizeKeys } from 'humps'
 import { object, string } from 'yup'
+import { ExclamationCircleIcon } from 'vue-tabler-icons'
 import { useAuthStore } from '@/stores/auth'
 import ValidatedInputField from '@/components/shared/validators/ValidatedInputField.vue'
 import type { UserAPIErrors } from '@/types/user'
@@ -47,6 +48,16 @@ function onSubmit (values: object) {
       kind="password"
       :errors="loginErrors?.nonFieldErrors"
     />
+    <div
+      v-if="loginErrors?.detail"
+      class="d-flex align-center text-error mt-n4 mb-4"
+    >
+      <exclamation-circle-icon
+        size="16"
+        class="mr-1"
+      />
+      <span class="text-caption">{{ loginErrors.detail }}</span>
+    </div>
     <div class="mt-n4 mb-6">
       <RouterLink
         to=""

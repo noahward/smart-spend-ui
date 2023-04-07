@@ -22,6 +22,8 @@ api.interceptors.response.use(
   error => {
     if (error.response.status === 401 && router.currentRoute.value.meta.requiresAuth) {
       localStorage.removeItem('user')
+      console.log(api.defaults.headers.common.Authorization)
+      delete api.defaults.headers.common.Authorization
       router.push('/login')
       return Promise.reject(error)
     }
