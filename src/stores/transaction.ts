@@ -10,6 +10,17 @@ export const useTransactionStore = defineStore('transaction', {
       transactions: [] as Transaction[]
     }
   },
+  getters: {
+    getTransactionsByAccount (state) {
+      return (accountId: number) => {
+        return state.transactions
+          .filter(obj => obj.account === accountId)
+          .sort((a, b) => {
+            return new Date(a.date).valueOf() - new Date(b.date).valueOf()
+          })
+      }
+    }
+  },
   actions: {
     async getTransactions () {
       return api.get('/transactions')
