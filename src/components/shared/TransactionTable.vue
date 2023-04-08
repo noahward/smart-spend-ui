@@ -10,7 +10,8 @@ import type { Transaction } from '@/types/transaction'
 
 type PropTypes = {
   transactions: Transaction[],
-  allAccounts?: boolean
+  allAccounts?: boolean,
+  accountName?: string
 }
 
 const categoryStore = useCategoryStore()
@@ -22,7 +23,10 @@ onMounted(() => {
     })
 })
 
-const componentProps = withDefaults(defineProps<PropTypes>(), { allAccounts: false })
+const componentProps = withDefaults(defineProps<PropTypes>(), {
+  allAccounts: false,
+  accountName: undefined
+})
 const transactionStore = useTransactionStore()
 
 const orderedTransactions = computed(() => {
@@ -61,9 +65,6 @@ const dialogCreate = ref(false)
 const dialogUpload = ref(false)
 const dialogDelete = ref(false)
 const dialogEdit = ref(false)
-
-const createTooltip = ref(false)
-const uploadTooltip = ref(false)
 
 const modifiedItem = ref()
 
@@ -163,47 +164,24 @@ function formatDate (date: Date) {
       class="text-right"
     >
       <div class="pa-2 d-flex align-center justify-end">
-        <div>
-          <v-btn
-            flat
-            rounded
-            density="comfortable"
-            class="small-btn mr-2"
-            @click="dialogUpload = true"
-          >
+        <div class="file-upload">
+          <label for="file-input">
             <UploadIcon
               size="22"
               class="pointer"
             />
-            <v-tooltip
-              activator="parent"
-              location="top"
-              open-delay="250"
-            >
-              Upload transaction file
-            </v-tooltip>
-          </v-btn>
+          </label>
+          <input
+            id="file-input"
+            type="file"
+          >
         </div>
         <div>
-          <v-btn
-            flat
-            rounded
-            density="comfortable"
-            class="small-btn"
+          <PlusIcon
+            size="22"
+            class="pointer ml-4"
             @click="dialogCreate = true"
-          >
-            <PlusIcon
-              size="22"
-              class="pointer"
-            />
-            <v-tooltip
-              activator="parent"
-              location="top"
-              open-delay="250"
-            >
-              Add a single transaction
-            </v-tooltip>
-          </v-btn>
+          />
         </div>
       </div>
     </v-col>
@@ -271,13 +249,11 @@ function formatDate (date: Date) {
     <CardBase>
       <template #header>
         <v-card-title class="text-h5">
-          Upload Transactions
+          Upload Transaction File
         </v-card-title>
       </template>
       <template #content>
-        <div class="flex-column">
-          Upload
-        </div>
+        Placeholder
       </template>
     </CardBase>
   </v-dialog>
@@ -358,5 +334,9 @@ function formatDate (date: Date) {
 .small-btn {
   padding: 2px 4px !important;
   min-width: 35px !important;
+}
+
+.file-upload>input {
+  display: none;
 }
 </style>

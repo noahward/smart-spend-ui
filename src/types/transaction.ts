@@ -33,6 +33,7 @@ export type TransactionAPIErrors = {
   amount?: Array<string>;
   account?: Array<string>;
   category?: Array<string>;
+  file?: Array<string>;
   nonFieldErrors?: Array<string>;
   detail?: string;
 }

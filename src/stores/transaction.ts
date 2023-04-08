@@ -44,6 +44,21 @@ export const useTransactionStore = defineStore('transaction', {
           throw error
         })
     },
+    async uploadTransactionFile (file: File) {
+      const formData = new FormData()
+      formData.append('file', file)
+      return api.post('transactions', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+        .then(() => {
+          console.log('Upload success')
+        })
+        .catch((error) => {
+          throw error
+        })
+    },
     async updateTransaction (transaction: TransactionUpdate) {
       return api.patch(`/transactions/${transaction.id}`, decamelizeKeys(transaction))
         .then((response) => {
