@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, nextTick, onMounted } from 'vue'
-import { CreditCardIcon, EditIcon, TrashXIcon, DeviceFloppyIcon, XIcon } from 'vue-tabler-icons'
+import { PlusIcon, UploadIcon, EditIcon, TrashXIcon, DeviceFloppyIcon, XIcon } from 'vue-tabler-icons'
 import { useCategoryStore } from '@/stores/category'
 import { useTransactionStore } from '@/stores/transaction'
 import CardBase from '@/components/shared/CardBase.vue'
@@ -60,6 +60,9 @@ const editCategory = ref(defaultEditCategory)
 const dialogCreate = ref(false)
 const dialogEdit = ref(false)
 const dialogDelete = ref(false)
+
+const createTooltip = ref(false)
+const uploadTooltip = ref(false)
 
 const modifiedItem = ref()
 
@@ -158,18 +161,38 @@ function formatDate (date: Date) {
       sm="6"
       class="text-right"
     >
-      <v-btn
-        color="primary"
-        flat
-        class="ml-auto"
-        @click="dialogCreate = true"
-      >
-        <CreditCardIcon
-          class="mr-2"
-          size="20"
-        />
-        Add Transaction
-      </v-btn>
+      <div class="pa-2 d-flex align-center justify-end">
+        <div>
+          <UploadIcon
+            size="22"
+            class="pointer mr-3"
+            @click="dialogCreate = true"
+            @mouseover="uploadTooltip = true"
+            @mouseleave="uploadTooltip = false"
+          />
+          <v-tooltip
+            v-model="uploadTooltip"
+            location="top"
+          >
+            Upload transaction file
+          </v-tooltip>
+        </div>
+        <div>
+          <PlusIcon
+            size="22"
+            class="pointer"
+            @click="dialogCreate = true"
+            @mouseover="createTooltip = true"
+            @mouseleave="createTooltip = false"
+          />
+          <v-tooltip
+            v-model="createTooltip"
+            location="top"
+          >
+            Create a single transaction
+          </v-tooltip>
+        </div>
+      </div>
     </v-col>
   </v-row>
   <v-data-table
