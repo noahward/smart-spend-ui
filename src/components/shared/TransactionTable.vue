@@ -58,8 +58,9 @@ const defaultEditCategory: DefaultEditCategory = {
 const editCategory = ref(defaultEditCategory)
 
 const dialogCreate = ref(false)
-const dialogEdit = ref(false)
+const dialogUpload = ref(false)
 const dialogDelete = ref(false)
+const dialogEdit = ref(false)
 
 const createTooltip = ref(false)
 const uploadTooltip = ref(false)
@@ -163,34 +164,46 @@ function formatDate (date: Date) {
     >
       <div class="pa-2 d-flex align-center justify-end">
         <div>
-          <UploadIcon
-            size="22"
-            class="pointer mr-3"
-            @click="dialogCreate = true"
-            @mouseover="uploadTooltip = true"
-            @mouseleave="uploadTooltip = false"
-          />
-          <v-tooltip
-            v-model="uploadTooltip"
-            location="top"
+          <v-btn
+            flat
+            rounded
+            density="comfortable"
+            class="small-btn mr-2"
+            @click="dialogUpload = true"
           >
-            Upload transaction file
-          </v-tooltip>
+            <UploadIcon
+              size="22"
+              class="pointer"
+            />
+            <v-tooltip
+              activator="parent"
+              location="top"
+              open-delay="250"
+            >
+              Upload transaction file
+            </v-tooltip>
+          </v-btn>
         </div>
         <div>
-          <PlusIcon
-            size="22"
-            class="pointer"
+          <v-btn
+            flat
+            rounded
+            density="comfortable"
+            class="small-btn"
             @click="dialogCreate = true"
-            @mouseover="createTooltip = true"
-            @mouseleave="createTooltip = false"
-          />
-          <v-tooltip
-            v-model="createTooltip"
-            location="top"
           >
-            Create a single transaction
-          </v-tooltip>
+            <PlusIcon
+              size="22"
+              class="pointer"
+            />
+            <v-tooltip
+              activator="parent"
+              location="top"
+              open-delay="250"
+            >
+              Add a single transaction
+            </v-tooltip>
+          </v-btn>
         </div>
       </div>
     </v-col>
@@ -250,6 +263,24 @@ function formatDate (date: Date) {
       </tr>
     </template>
   </v-data-table>
+
+  <v-dialog
+    v-model="dialogUpload"
+    width="375"
+  >
+    <CardBase>
+      <template #header>
+        <v-card-title class="text-h5">
+          Upload Transactions
+        </v-card-title>
+      </template>
+      <template #content>
+        <div class="flex-column">
+          Upload
+        </div>
+      </template>
+    </CardBase>
+  </v-dialog>
 
   <v-dialog
     v-model="dialogCreate"
@@ -322,3 +353,10 @@ function formatDate (date: Date) {
     </CardBase>
   </v-dialog>
 </template>
+
+<style scoped lang="scss">
+.small-btn {
+  padding: 2px 4px !important;
+  min-width: 35px !important;
+}
+</style>
