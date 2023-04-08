@@ -139,6 +139,12 @@ function formatDate (date: Date) {
   return new Date(date + 'T00:00').toLocaleDateString('en', options)
 }
 
+function previewFile (event: any) {
+  transactionStore.previewTransactionFile(event.target.files[0])
+    .catch((error) => {
+      console.error(error)
+    })
+}
 </script>
 
 <template>
@@ -174,6 +180,7 @@ function formatDate (date: Date) {
           <input
             id="file-input"
             type="file"
+            @change="previewFile"
           >
         </div>
         <div>
