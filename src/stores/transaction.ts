@@ -49,7 +49,7 @@ export const useTransactionStore = defineStore('transaction', {
     async previewTransactionFile (file: File) {
       const formData = new FormData()
       formData.append('file', file)
-      return api.post('transaction-preview', formData, {
+      return api.post('transaction-file-preview', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
