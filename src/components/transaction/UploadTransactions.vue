@@ -72,6 +72,7 @@ function onSubmit () {
   accountMap.value[props.previewData[step.value].id] = targetAcc.id
   accountError.value = null
   selectedAccount.value = null
+  emit('submitMap', accountMap.value)
 }
 </script>
 
