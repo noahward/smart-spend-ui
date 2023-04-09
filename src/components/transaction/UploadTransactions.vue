@@ -3,17 +3,18 @@ import { ref, computed } from 'vue'
 import { ExclamationCircleIcon } from 'vue-tabler-icons'
 import { useAccountStore } from '@/stores/account'
 import PreviewTable from '@/components/shared/PreviewTable.vue'
+import type { Account } from '@/types/account'
 import type { AccountTransactionsPreview } from '@/types/file-preview'
 
 type PropTypes = { previewData: AccountTransactionsPreview[] }
 type AccountMap = {
-  [key: string]: string
+  [key: string]: number
 }
 
 const emit = defineEmits(['closeDialog', 'submitMap'])
 
 const props = defineProps<PropTypes>()
-const { accountSelectOptions } = useAccountStore()
+const { accountSelectOptions, accounts } = useAccountStore()
 
 const step = ref(0)
 const accountMap = ref<AccountMap>({})
@@ -34,7 +35,12 @@ function nextStep () {
     return
   }
 
-  accountMap.value[props.previewData[step.value].id] = selectedAccount.value
+  const targetAcc = accounts.find(acc => acc.name === selectedAccount.value)
+  if (!targetAcc) {
+    return
+  }
+
+  accountMap.value[props.previewData[step.value].id] = targetAcc.id
   accountError.value = null
   selectedAccount.value = null
   step.value += 1
@@ -43,7 +49,13 @@ function nextStep () {
 function previousStep () {
   step.value -= 1
   accountError.value = null
-  selectedAccount.value = accountMap.value[props.previewData[step.value].id]
+
+  const targetAcc = accounts.find(acc => acc.id === accountMap.value[step.value])
+  if (!targetAcc) {
+    return
+  }
+
+  selectedAccount.value = targetAcc.name
 }
 
 function onSubmit () {
@@ -52,10 +64,14 @@ function onSubmit () {
     return
   }
 
-  accountMap.value[props.previewData[step.value].id] = selectedAccount.value
+  const targetAcc = accounts.find(acc => acc.name === selectedAccount.value)
+  if (!targetAcc) {
+    return
+  }
+
+  accountMap.value[props.previewData[step.value].id] = targetAcc.id
   accountError.value = null
   selectedAccount.value = null
-  emit('submitMap', accountMap.value)
 }
 </script>
 
