@@ -2,12 +2,14 @@ import { defineStore } from 'pinia'
 import { camelizeKeys, decamelizeKeys } from 'humps'
 import { api } from '@/api'
 import { useAccountStore } from '@/stores/account'
+import type { AccountTransactionsPreview } from '@/types/file-preview'
 import type { Transaction, TransactionCreate, TransactionUpdate } from '@/types/transaction'
 
 export const useTransactionStore = defineStore('transaction', {
   state: () => {
     return {
-      transactions: [] as Transaction[]
+      transactions: [] as Transaction[],
+      previewData: [] as AccountTransactionsPreview[]
     }
   },
   getters: {
@@ -52,6 +54,9 @@ export const useTransactionStore = defineStore('transaction', {
           'Content-Type': 'multipart/form-data'
         }
       })
+        .then((response) => {
+          this.previewData = camelizeKeys(response.data) as AccountTransactionsPreview[]
+        })
     },
     async uploadTransactionFile (file: File) {
       const formData = new FormData()
