@@ -61,9 +61,8 @@ export const useTransactionStore = defineStore('transaction', {
     async uploadTransactionFile (file: File, map: {[key: string]: string}) {
       const formData = new FormData()
       formData.append('file', file)
-      const payload = { formData, map }
-
-      return api.post('transaction-file-upload', decamelizeKeys(payload), {
+      formData.append('map', JSON.stringify(map))
+      return api.post('transaction-file-upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

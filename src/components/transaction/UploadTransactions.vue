@@ -34,7 +34,7 @@ function nextStep () {
     return
   }
 
-  accountMap.value[step.value] = selectedAccount.value
+  accountMap.value[props.previewData[step.value].id] = selectedAccount.value
   accountError.value = null
   selectedAccount.value = null
   step.value += 1
@@ -43,7 +43,7 @@ function nextStep () {
 function previousStep () {
   step.value -= 1
   accountError.value = null
-  selectedAccount.value = accountMap.value[step.value]
+  selectedAccount.value = accountMap.value[props.previewData[step.value].id]
 }
 
 function onSubmit () {
@@ -52,10 +52,10 @@ function onSubmit () {
     return
   }
 
-  accountMap.value[step.value] = selectedAccount.value
+  accountMap.value[props.previewData[step.value].id] = selectedAccount.value
   accountError.value = null
   selectedAccount.value = null
-  emit('submitMap', accountMap.value)
+  // emit('submitMap', accountMap.value)
 }
 </script>
 

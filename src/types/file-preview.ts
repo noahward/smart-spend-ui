@@ -6,6 +6,7 @@ export type TransactionPreview = {
 }
 
 export type AccountTransactionsPreview = {
+  id: number;
   kind: string;
   transactions: TransactionPreview[]
 }
