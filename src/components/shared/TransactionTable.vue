@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { ref, computed, nextTick, onMounted } from 'vue'
 import { PlusIcon, UploadIcon, EditIcon, TrashXIcon, DeviceFloppyIcon, XIcon } from 'vue-tabler-icons'
+import { formatDate } from '@/helpers/formatDate'
+import { formatCurrency } from '@/helpers/formatCurrency'
 import { useCategoryStore } from '@/stores/category'
 import { useTransactionStore } from '@/stores/transaction'
 import CardBase from '@/components/shared/CardBase.vue'
 import AddTransaction from '@/components/transaction/AddTransaction.vue'
 import EditTransaction from '@/components/transaction/EditTransaction.vue'
+import UploadTransactions from '@/components/transaction/UploadTransactions.vue'
 import type { Transaction } from '@/types/transaction'
 
 type PropTypes = {
@@ -67,6 +70,7 @@ const dialogDelete = ref(false)
 const dialogEdit = ref(false)
 
 const modifiedItem = ref()
+const selectedFile = ref(null)
 
 function editItem (item: Transaction) {
   modifiedItem.value = item
@@ -130,17 +134,25 @@ function closeCategorySelect (item: any) {
   editCategory.value = defaultEditCategory
 }
 
-function formatDate (date: Date) {
-  const options: Intl.DateTimeFormatOptions = {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric'
-  }
-  return new Date(date + 'T00:00').toLocaleDateString('en', options)
+function previewFile (event: any) {
+  selectedFile.value = event.target.files[0]
+  transactionStore.previewTransactionFile(event.target.files[0])
+    .then(() => {
+      dialogUpload.value = true
+    })
+    .catch((error) => {
+      console.error(error)
+    })
 }
 
-function previewFile (event: any) {
-  transactionStore.previewTransactionFile(event.target.files[0])
+function uploadFileTransactions (map: {[key: string]: string}) {
+  if (selectedFile.value === null) {
+    return
+  }
+  return transactionStore.uploadTransactionFile(selectedFile.value, map)
+    .then(() => {
+      dialogUpload.value = false
+    })
     .catch((error) => {
       console.error(error)
     })
@@ -203,7 +215,7 @@ function previewFile (event: any) {
       <tr>
         <td>{{ formatDate(item.columns.date) }}</td>
         <td>{{ item.columns.description }}</td>
-        <td>{{ item.columns.amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) }}</td>
+        <td>{{ formatCurrency(item.columns.amount, item.raw.currencyCode) }}</td>
         <td>
           <div class="d-flex align-center">
             <v-select
@@ -251,16 +263,21 @@ function previewFile (event: any) {
 
   <v-dialog
     v-model="dialogUpload"
-    width="375"
+    width="600"
+    persistent
   >
     <CardBase>
       <template #header>
         <v-card-title class="text-h5">
-          Upload Transaction File
+          Upload Transactions
         </v-card-title>
       </template>
       <template #content>
-        Placeholder
+        <UploadTransactions
+          :preview-data="transactionStore.previewData"
+          @submit-map="uploadFileTransactions"
+          @close-dialog="dialogUpload = false"
+        />
       </template>
     </CardBase>
   </v-dialog>

@@ -58,10 +58,12 @@ export const useTransactionStore = defineStore('transaction', {
           this.previewData = camelizeKeys(response.data) as AccountTransactionsPreview[]
         })
     },
-    async uploadTransactionFile (file: File) {
+    async uploadTransactionFile (file: File, map: {[key: string]: string}) {
       const formData = new FormData()
       formData.append('file', file)
-      return api.post('transactions', formData, {
+      const payload = { formData, map }
+
+      return api.post('transaction-file-upload', decamelizeKeys(payload), {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
