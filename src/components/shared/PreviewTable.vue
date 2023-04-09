@@ -34,7 +34,7 @@ const headers = ref([
         <td>{{ formatDate(item.columns.date) }}</td>
         <td>{{ item.columns.description }}</td>
         <td>
-          {{ formatCurrency(item.columns.amount, item.columns.currencyCode) }}
+          {{ formatCurrency(item.columns.amount, item.raw.currencyCode) }}
         </td>
       </tr>
     </template>
