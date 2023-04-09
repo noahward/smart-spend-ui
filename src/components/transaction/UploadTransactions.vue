@@ -147,6 +147,5 @@ function onSubmit () {
         Cancel
       </v-btn>
     </div>
-    {{ accountMap }}
   </div>
 </template>
