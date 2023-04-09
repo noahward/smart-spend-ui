@@ -55,7 +55,7 @@ function onSubmit () {
   accountMap.value[props.previewData[step.value].id] = selectedAccount.value
   accountError.value = null
   selectedAccount.value = null
-  // emit('submitMap', accountMap.value)
+  emit('submitMap', accountMap.value)
 }
 </script>
 
