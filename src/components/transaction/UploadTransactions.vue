@@ -3,7 +3,6 @@ import { ref, computed } from 'vue'
 import { ExclamationCircleIcon } from 'vue-tabler-icons'
 import { useAccountStore } from '@/stores/account'
 import PreviewTable from '@/components/shared/PreviewTable.vue'
-import type { Account } from '@/types/account'
 import type { AccountTransactionsPreview } from '@/types/file-preview'
 
 type PropTypes = { previewData: AccountTransactionsPreview[] }
@@ -48,14 +47,9 @@ function nextStep () {
 
 function previousStep () {
   step.value -= 1
+  const targetAcc = accounts.find(acc => acc.id === accountMap.value[props.previewData[step.value].id])
+  selectedAccount.value = targetAcc ? targetAcc.name : null
   accountError.value = null
-
-  const targetAcc = accounts.find(acc => acc.id === accountMap.value[step.value])
-  if (!targetAcc) {
-    return
-  }
-
-  selectedAccount.value = targetAcc.name
 }
 
 function onSubmit () {
@@ -153,5 +147,6 @@ function onSubmit () {
         Cancel
       </v-btn>
     </div>
+    {{ accountMap }}
   </div>
 </template>
