@@ -16,9 +16,9 @@ const orderedTransactions = computed(() => {
 })
 
 const headers = ref([
-  { title: 'Date', key: 'date' },
-  { title: 'Description', key: 'description' },
-  { title: 'Amount', key: 'amount' }
+  { title: 'Date', key: 'date', width: '25%' },
+  { title: 'Description', key: 'description', width: '50%' },
+  { title: 'Amount', key: 'amount', width: '25%' }
 ])
 </script>
 
