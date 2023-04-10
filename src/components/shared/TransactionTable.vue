@@ -275,6 +275,7 @@ function uploadFileTransactions (map: {[key: string]: string}) {
       <template #content>
         <UploadTransactions
           :preview-data="transactionStore.previewData"
+          :account-name="accountName"
           @submit-map="uploadFileTransactions"
           @close-dialog="dialogUpload = false"
         />

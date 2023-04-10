@@ -63,8 +63,10 @@ const filteredTransaction = computed(() => {
           </template>
           <template #content>
             <TransactionTable
+              v-if="selectedAccount"
               all-accounts
               :transactions="filteredTransaction"
+              :account-name="selectedAccount.name"
             />
           </template>
         </CardBase>

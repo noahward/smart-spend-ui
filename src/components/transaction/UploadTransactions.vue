@@ -5,7 +5,11 @@ import { useAccountStore } from '@/stores/account'
 import PreviewTable from '@/components/shared/PreviewTable.vue'
 import type { AccountTransactionsPreview } from '@/types/file-preview'
 
-type PropTypes = { previewData: AccountTransactionsPreview[] }
+type PropTypes = {
+  previewData: AccountTransactionsPreview[],
+  accountName?: string
+}
+
 type AccountMap = {
   [key: string]: number
 }
@@ -18,7 +22,7 @@ const { accountSelectOptions, accounts } = useAccountStore()
 const step = ref(0)
 const accountMap = ref<AccountMap>({})
 const accountError = ref<string | null>()
-const selectedAccount = ref<string | null>(null)
+const selectedAccount = ref<string | null>(props.accountName || null)
 
 const isMultistep = computed(() => {
   return props.previewData.length > 1
