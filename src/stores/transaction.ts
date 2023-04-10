@@ -67,8 +67,23 @@ export const useTransactionStore = defineStore('transaction', {
           'Content-Type': 'multipart/form-data'
         }
       })
-        .then(() => {
-          console.log('Upload success')
+        .then((response) => {
+          const newTransactions = decamelizeKeys(response.data) as Transaction[]
+          this.transactions.push(...newTransactions)
+
+          const accountSums: { [key: string]: number } = {}
+          newTransactions.forEach((transaction) => {
+            const { account, amount } = transaction
+            accountSums[account] = (accountSums[account] || 0) + amount
+          })
+
+          const { accounts } = useAccountStore()
+          accounts.forEach((account) => {
+            const sum = accountSums[account.id]
+            if (sum !== undefined) {
+              account.balance += sum
+            }
+          })
         })
         .catch((error) => {
           throw error
