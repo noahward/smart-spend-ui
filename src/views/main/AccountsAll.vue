@@ -4,7 +4,7 @@ import { useAccountStore } from '@/stores/account'
 import { useTransactionStore } from '@/stores/transaction'
 import CardBase from '@/components/shared/CardBase.vue'
 import PageBanner from '@/components/shared/PageBanner.vue'
-import TransactionTable from '@/components/shared/TransactionTable.vue'
+import TransactionTable from '@/components/transaction/TransactionTable.vue'
 
 const accountStore = useAccountStore()
 const transactionStore = useTransactionStore()

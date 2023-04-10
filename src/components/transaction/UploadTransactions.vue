@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue'
 import { ExclamationCircleIcon } from 'vue-tabler-icons'
 import { useAccountStore } from '@/stores/account'
-import PreviewTable from '@/components/shared/PreviewTable.vue'
+import PreviewTable from '@/components/transaction/PreviewTable.vue'
 import type { AccountTransactionsPreview } from '@/types/file-preview'
 
 type PropTypes = {

@@ -6,7 +6,7 @@ import { useTransactionStore } from '@/stores/transaction'
 
 import CardBase from '@/components/shared/CardBase.vue'
 import PageBanner from '@/components/shared/PageBanner.vue'
-import TransactionTable from '@/components/shared/TransactionTable.vue'
+import TransactionTable from '@/components/transaction/TransactionTable.vue'
 
 const route = useRoute()
 const accountStore = useAccountStore()
