@@ -50,7 +50,7 @@ const filteredTransaction = computed(() => {
             <v-card-title
               v-if="selectedAccount"
               class="text-h5"
-              :class="accountStore.getTotalBalance >= 0 ? 'text-success' : 'text-error'"
+              :class="selectedAccount.balance >= 0 ? 'text-success' : 'text-error'"
             >
               {{ selectedAccount.balance.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) }}
             </v-card-title>
