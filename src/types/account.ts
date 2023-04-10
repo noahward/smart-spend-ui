@@ -6,6 +6,13 @@ export type Account = {
   initialBalance: number;
 }
 
+export type AccountUpdate = {
+  id: number;
+  name?: string;
+  kind?: 'saving' | 'spending';
+  balance?: number;
+}
+
 export type AccountAPIErrors = {
   name?: Array<string>;
   kind?: Array<string>;

@@ -7,6 +7,7 @@ import { useTransactionStore } from '@/stores/transaction'
 import { router } from '@/router'
 import CardBase from '@/components/shared/CardBase.vue'
 import PageBanner from '@/components/shared/PageBanner.vue'
+import EditAccount from '@/components/account/EditAccount.vue'
 import TransactionTable from '@/components/transaction/TransactionTable.vue'
 
 const route = useRoute()
@@ -118,6 +119,7 @@ async function confirmDelete () {
       </v-col>
     </v-row>
   </div>
+
   <v-dialog
     v-model="dialogDelete"
     width="375"
@@ -147,6 +149,26 @@ async function confirmDelete () {
             Cancel
           </v-btn>
         </div>
+      </template>
+    </CardBase>
+  </v-dialog>
+
+  <v-dialog
+    v-model="dialogEdit"
+    width="375"
+  >
+    <CardBase>
+      <template #header>
+        <v-card-title class="text-h5">
+          Edit Account
+        </v-card-title>
+      </template>
+      <template #content>
+        <EditAccount
+          v-if="selectedAccount"
+          :initial-values="selectedAccount"
+          @close-dialog="dialogEdit = false"
+        />
       </template>
     </CardBase>
   </v-dialog>

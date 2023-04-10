@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { decamelizeKeys, camelizeKeys } from 'humps'
 import { api } from '@/api'
-import type { Account } from '@/types/account'
+import type { Account, AccountUpdate } from '@/types/account'
 
 export const useAccountStore = defineStore('account', {
   state: () => {
@@ -42,6 +42,19 @@ export const useAccountStore = defineStore('account', {
       return api.delete(`/accounts/${accountId}`)
         .then(() => {
           this.accounts = this.accounts.filter((acc) => acc.id !== accountId)
+        })
+        .catch((error) => {
+          throw error
+        })
+    },
+    async updateAccount (accountInfo: AccountUpdate) {
+      return api.patch(`/accounts/${accountInfo.id}`, decamelizeKeys(accountInfo))
+        .then((response) => {
+          const updAccount = camelizeKeys(response.data) as Account
+          const target = this.accounts.find((account) => account.id === updAccount.id)
+          if (target) {
+            Object.assign(target, updAccount)
+          }
         })
         .catch((error) => {
           throw error
