@@ -76,7 +76,7 @@ async function confirmDelete () {
                   v-if="selectedAccount"
                   class="mt-1"
                 >
-                  {{ selectedAccount.name }}
+                  {{ selectedAccount.kind[0].toUpperCase() + selectedAccount.kind.slice(1) }}
                 </v-card-subtitle>
               </div>
               <div>
