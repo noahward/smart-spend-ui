@@ -14,16 +14,16 @@ api.interceptors.request.use(
     }
     return config
   },
-  error => { return Promise.reject(error) }
+  error => { console.log('Error!'); return Promise.reject(error) }
 )
 
 api.interceptors.response.use(
   response => response,
   error => {
     if (error.response.status === 401 && router.currentRoute.value.meta.requiresAuth) {
+      const authStore = useAuthStore()
+      authStore.user = {}
       localStorage.removeItem('user')
-      console.log(api.defaults.headers.common.Authorization)
-      delete api.defaults.headers.common.Authorization
       router.push('/login')
       return Promise.reject(error)
     }
