@@ -33,7 +33,7 @@ api.interceptors.response.use(
 
 if (import.meta.env.VITE_LOG_REQUESTS === 'true') {
   api.interceptors.request.use(request => {
-    console.log('Starting request:', request)
+    console.log(`Starting request to ${request.url}:`, request)
     return request
   })
 }
