@@ -10,53 +10,34 @@ const transactionStore = useTransactionStore()
 
 const lastMonthNetAmount = computed(() => {
   const today = new Date()
-  const currentMonth = today.getMonth()
-  const lastMonth = new Date(today.getFullYear(), currentMonth - 1, 1)
-
-  const sum = transactionStore.transactions.reduce((sum, curr) => {
-    const date = new Date(curr.date)
-    if (date >= lastMonth && date < today) {
-      return sum + curr.amount
-    } else {
-      return sum
-    }
-  }, 0)
-
-  return sum
+  const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1)
+  const filteredTransactions = transactionStore.transactions.filter((transaction) =>
+    new Date(transaction.date).getFullYear() === lastMonth.getFullYear() &&
+    new Date(transaction.date).getMonth() === lastMonth.getMonth()
+  )
+  return filteredTransactions.reduce((sum, transaction) => sum + transaction.amount, 0)
 })
 
 const lastMonthNetSpent = computed(() => {
   const today = new Date()
-  const currentMonth = today.getMonth()
-  const lastMonth = new Date(today.getFullYear(), currentMonth - 1, 1)
-
-  const sum = transactionStore.transactions.reduce((sum, curr) => {
-    const date = new Date(curr.date)
-    if (date >= lastMonth && date < today && curr.amount < 0) {
-      return sum + curr.amount
-    } else {
-      return sum
-    }
-  }, 0)
-
-  return sum
+  const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1)
+  const filteredTransactions = transactionStore.transactions.filter((transaction) =>
+    new Date(transaction.date).getFullYear() === lastMonth.getFullYear() &&
+    new Date(transaction.date).getMonth() === lastMonth.getMonth() &&
+    transaction.amount < 0
+  )
+  return filteredTransactions.reduce((sum, transaction) => sum + transaction.amount, 0)
 })
 
 const lastMonthNetIncome = computed(() => {
   const today = new Date()
-  const currentMonth = today.getMonth()
-  const lastMonth = new Date(today.getFullYear(), currentMonth - 1, 1)
-
-  const sum = transactionStore.transactions.reduce((sum, curr) => {
-    const date = new Date(curr.date)
-    if (date >= lastMonth && date < today && curr.amount > 0) {
-      return sum + curr.amount
-    } else {
-      return sum
-    }
-  }, 0)
-
-  return sum
+  const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1)
+  const filteredTransactions = transactionStore.transactions.filter((transaction) =>
+    new Date(transaction.date).getFullYear() === lastMonth.getFullYear() &&
+    new Date(transaction.date).getMonth() === lastMonth.getMonth() &&
+    transaction.amount > 0
+  )
+  return filteredTransactions.reduce((sum, transaction) => sum + transaction.amount, 0)
 })
 
 const lastMonthTransactionCount = computed(() => {
