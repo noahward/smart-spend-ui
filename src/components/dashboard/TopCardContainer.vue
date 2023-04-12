@@ -59,6 +59,18 @@ const lastMonthNetIncome = computed(() => {
   return sum
 })
 
+const lastMonthTransactionCount = computed(() => {
+  const today = new Date()
+  const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1)
+
+  const filteredTransactions = transactionStore.transactions.filter((transaction) =>
+    new Date(transaction.date).getFullYear() === lastMonth.getFullYear() &&
+    new Date(transaction.date).getMonth() === lastMonth.getMonth()
+  )
+
+  return filteredTransactions.length
+})
+
 const lastMonth = computed(() => {
   const date = new Date()
   date.setMonth(date.getMonth() - 1)
@@ -128,7 +140,7 @@ const lastMonth = computed(() => {
     >
       <TopCard
         :icon="OnetwotreeIcon"
-        :value="transactionStore.transactions.length"
+        :value="lastMonthTransactionCount"
         :title="`${lastMonth} Transaction Count`"
       />
     </v-col>
