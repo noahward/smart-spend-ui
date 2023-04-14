@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { BuildingBankIcon, OnetwotreeIcon, CreditCardIcon, MoneybagIcon, CalculatorIcon } from 'vue-tabler-icons'
+import { BuildingBankIcon, OnetwotreeIcon, CreditCardIcon, MoneybagIcon, CalculatorIcon, CircleHalf2Icon } from 'vue-tabler-icons'
 import { useAccountStore } from '@/stores/account'
 import { useTransactionStore } from '@/stores/transaction'
 import TopCard from './TopCard.vue'
@@ -50,6 +50,17 @@ const lastMonthTransactionCount = computed(() => {
   )
 
   return filteredTransactions.length
+})
+
+const ratioClassifiedTransactions = computed(() => {
+  const numUnclassified = transactionStore.transactions
+    .filter(transaction => transaction.categoryName === undefined)
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    .length
+
+  const numClassified = transactionStore.transactions.length - numUnclassified
+
+  return numClassified / numUnclassified
 })
 
 const lastMonth = computed(() => {
@@ -122,7 +133,20 @@ const lastMonth = computed(() => {
       <TopCard
         :icon="OnetwotreeIcon"
         :value="lastMonthTransactionCount"
-        :title="`${lastMonth} Transaction Count`"
+        :title="`${lastMonth} Transactions`"
+      />
+    </v-col>
+    <v-col
+      cols="12"
+      lg="2"
+      md="4"
+      sm="4"
+    >
+      <TopCard
+        percent
+        :icon="CircleHalf2Icon"
+        :value="ratioClassifiedTransactions"
+        title="Classified Transactions"
       />
     </v-col>
   </v-row>

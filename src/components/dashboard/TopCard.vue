@@ -7,9 +7,10 @@ type PropTypes = {
   title: string;
   value: number;
   number?: boolean;
+  percent?: boolean;
 }
 
-withDefaults(defineProps<PropTypes>(), { number: false })
+withDefaults(defineProps<PropTypes>(), { number: false, percent: false })
 </script>
 
 <template>
@@ -17,8 +18,9 @@ withDefaults(defineProps<PropTypes>(), { number: false })
     <component
       :is="icon"
       size="40"
+      class="text-textMedium"
     />
-    <div class="text-h6 text-capitalize font-weight-bold mt-3">
+    <div class="text-h6 text-capitalize font-weight-bold text-textMedium mt-3">
       {{ title }}
     </div>
     <div
@@ -26,6 +28,7 @@ withDefaults(defineProps<PropTypes>(), { number: false })
       :class="value >= 0 ? 'text-success' : 'text-error'"
     >
       <span v-if="number">{{ formatCurrency(value) }}</span>
+      <span v-else-if="percent">%{{ (value * 100).toFixed(1) }}</span>
       <span v-else>{{ value }}</span>
     </div>
   </div>
