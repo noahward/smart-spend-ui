@@ -17,7 +17,7 @@
         flat
         color="primary"
         class="mb-4"
-        to="/login"
+        to="/dashboard"
       >
         Go home
       </v-btn>
