@@ -18,11 +18,11 @@ export const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   const auth = useAuthStore()
 
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (!auth.isAuthenticated) {
-      auth.returnUrl = to.fullPath
-      return next('/login')
-    } else next()
+  if (to.meta.requiresAuth && !auth.isAuthenticated) {
+    auth.returnUrl = to.fullPath
+    return next('/login')
+  } else if (['/login', '/register'].includes(to.fullPath) && auth.isAuthenticated) {
+    return next('/dashboard')
   } else {
     next()
   }
