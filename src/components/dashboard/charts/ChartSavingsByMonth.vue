@@ -123,11 +123,6 @@ function computeCategories (numMonths: number) {
           :series="chartSeries"
           height="400"
         />
-        <div class="d-flex justify-center mt-2">
-          <span class="mx-2 text-textSecondary font-weight-bold text-13 pointer timeline-btn">1Y</span>
-          <span class="mx-2 text-textSecondary font-weight-bold text-13 pointer">2Y</span>
-          <span class="mx-2 text-textSecondary font-weight-bold text-13 pointer">3Y</span>
-        </div>
       </v-card-text>
     </v-card-item>
   </v-card>
