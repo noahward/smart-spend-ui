@@ -8,7 +8,7 @@ export type Transaction = {
   user: number;
   account: number;
   accountName: string;
-  categoryName: string | null;
+  categoryName?: string;
 }
 
 export type TransactionCreate = {
