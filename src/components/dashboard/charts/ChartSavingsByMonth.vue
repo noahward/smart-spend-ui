@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useTheme, useDisplay } from 'vuetify'
+import { useAccountStore } from '@/stores/account'
 import { useTransactionStore } from '@/stores/transaction'
+import { formatCurrency } from '@/helpers/formatCurrency'
 
 const theme = useTheme()
 const { name } = useDisplay()
+const accountStore = useAccountStore()
 const transactionStore = useTransactionStore()
 
 const numMonths = ref(['xs'].includes(name.value) ? 4 : 12)
@@ -114,8 +117,13 @@ function computeCategories (numMonths: number) {
 <template>
   <v-card variant="outlined">
     <v-card-item>
-      <div class="text-h5 text-textPrimary mb-5">
-        Monthly Inflow and Outflow
+      <div class="d-flex flex-column mb-5">
+        <span class="text-h5 text-textPrimary">Monthly Inflow and Outflow</span>
+        <span class="text-13 mt-2 text-textSecondary">Net Worth</span>
+        <span
+          class="text-h4"
+          :class="accountStore.getTotalBalance >= 0 ? 'text-success' : 'text-error'"
+        >{{ formatCurrency(accountStore.getTotalBalance) }}</span>
       </div>
       <v-card-text>
         <apexchart
