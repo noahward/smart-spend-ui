@@ -17,12 +17,18 @@ onMounted(() => {
 
 <template>
   <div class="dashboard">
-    <TopCardContainer />
+    <TopCardContainer class="hidden-sm-and-down" />
     <v-row>
-      <v-col cols="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <ChartTransactionCategories kind="inflow" />
       </v-col>
-      <v-col cols="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <ChartTransactionCategories kind="outflow" />
       </v-col>
     </v-row>

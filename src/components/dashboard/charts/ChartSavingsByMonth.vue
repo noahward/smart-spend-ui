@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { useTheme } from 'vuetify'
 import { ref, computed } from 'vue'
+import { useTheme, useDisplay } from 'vuetify'
 import { useTransactionStore } from '@/stores/transaction'
 
 const theme = useTheme()
+const { name } = useDisplay()
 const transactionStore = useTransactionStore()
 
-const numMonths = ref(12)
+const numMonths = ref(['xs'].includes(name.value) ? 4 : 12)
 
 const chartOptions = computed(() => {
   return {
