@@ -12,7 +12,7 @@ export type Transaction = {
 }
 
 export type TransactionCreate = {
-  date: string;
+  date: string | Date;
   description: string;
   amount: number;
   account: number;

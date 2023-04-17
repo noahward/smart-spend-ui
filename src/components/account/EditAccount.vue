@@ -5,6 +5,7 @@ import { camelizeKeys } from 'humps'
 import { object, string, number, mixed } from 'yup'
 import { getSubmitFn } from '@/helpers/validationHelper'
 import { useAccountStore } from '@/stores/account'
+import { useTransactionStore } from '@/stores/transaction'
 import ValidatedInputField from '@/components/shared/validators/ValidatedInputField.vue'
 import ValidatedSelectField from '@/components/shared/validators/ValidatedSelectField.vue'
 import type { Account, AccountAPIErrors } from '@/types/account'
@@ -13,7 +14,7 @@ type PropTypes = {
   initialValues: Account
 }
 
-defineProps<PropTypes>()
+const props = defineProps<PropTypes>()
 
 const emit = defineEmits(['closeDialog'])
 
@@ -29,10 +30,23 @@ const accountOptions = [
 ]
 
 const accountStore = useAccountStore()
+const transactionStore = useTransactionStore()
 
 const updateErrors = ref<AccountAPIErrors>({})
 
 const onSubmit = getSubmitFn(accountSchema, (values: any) => {
+  if (props.initialValues.balance !== Number(values.balance)) {
+    const transaction = {
+      date: new Date().toISOString().slice(0, 10),
+      description: 'Manual Balance Update',
+      amount: values.balance - props.initialValues.balance,
+      account: values.id
+    }
+    transactionStore.addSingleTransaction(transaction)
+      .catch((error) => {
+        updateErrors.value = camelizeKeys(error.response.data)
+      })
+  }
   accountStore.updateAccount(values)
     .then(() => {
       emit('closeDialog')
