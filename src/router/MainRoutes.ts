@@ -1,5 +1,5 @@
 const MainRoutes = {
-  path: '/',
+  path: '/main',
   meta: {
     requiresAuth: true
   },

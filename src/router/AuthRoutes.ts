@@ -7,6 +7,11 @@ const AuthRoutes = {
   redirect: '/login',
   children: [
     {
+      name: 'Landing',
+      path: '/',
+      component: () => import('@/views/auth/Landing.vue')
+    },
+    {
       name: 'Login',
       path: '/login',
       component: () => import('@/views/auth/Login.vue')
