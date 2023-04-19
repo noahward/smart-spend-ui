@@ -1,10 +1,28 @@
 <script setup lang="ts">
-import CoreValueCard from './CoreValueCard.vue'
+import { LockIcon, PigMoneyIcon, DeviceMobileIcon } from 'vue-tabler-icons'
+
+const cardData = [
+  {
+    title: 'Data Security',
+    subtitle: 'Rest easy knowing that my buddy Kevin is making sure your data is impenetrable.',
+    icon: LockIcon
+  },
+  {
+    title: 'Simple Saving',
+    subtitle: 'Get personalized recommendations, track your progress, and watch your savings grow.',
+    icon: PigMoneyIcon
+  },
+  {
+    title: 'Conventient Budgeting',
+    subtitle: 'Get insights and stay on top of your finances, no matter where you are.',
+    icon: DeviceMobileIcon
+  }
+]
 </script>
 
 <template>
-  <v-container class="h-100 d-flex align-center flex-column">
-    <v-row class="justify-center w-100">
+  <v-container class="h-100 d-flex align-center flex-column pt-lg-16">
+    <v-row class="justify-center w-100 pt-lg-10">
       <v-col
         cols="12"
         md="5"
@@ -57,12 +75,30 @@ import CoreValueCard from './CoreValueCard.vue'
     </v-row>
     <v-row class="w-100 px-lg-10">
       <v-col
-        v-for="i in 3"
+        v-for="card, i in cardData"
         :key="i"
         cols="12"
         md="4"
+        class="pt-lg10 pb-n10"
+        data-aos="fade-up"
+        :data-aos-duration="1000 + (i * 1000)"
       >
-        <CoreValueCard />
+        <div>
+          <v-card-title>
+            <component
+              :is="card.icon"
+              size="40"
+              stroke-width="1.5"
+              class="text-textPrimary"
+            />
+          </v-card-title>
+          <v-card-title class="text-h5 text-weight-bold text-textPrimary">
+            {{ card.title }}
+          </v-card-title>
+          <v-card-text class="text-subtitle-1 text-textMedium">
+            {{ card.subtitle }}
+          </v-card-text>
+        </div>
       </v-col>
     </v-row>
   </v-container>
