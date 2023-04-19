@@ -1,5 +1,13 @@
 <script setup lang="ts">
+import { useTheme } from 'vuetify'
+import { SunFilledIcon, MoonFilledIcon } from 'vue-tabler-icons'
 import Logo from '@/layouts/full/logo/Logo.vue'
+
+const theme = useTheme()
+
+function toggleTheme () {
+  theme.global.name.value = theme.global.current.value.dark ? 'CustomLightTheme' : 'CustomDarkTheme'
+}
 </script>
 
 <template>
@@ -15,6 +23,20 @@ import Logo from '@/layouts/full/logo/Logo.vue'
         />
         <v-spacer />
         <div>
+          <v-btn
+            class="nav-theme-btn mr-5"
+            size="small"
+            icon
+            variant="flat"
+            plain
+            @click="toggleTheme"
+          >
+            <SunFilledIcon v-if="theme.global.current.value.dark" />
+            <MoonFilledIcon
+              v-else
+              size="18"
+            />
+          </v-btn>
           <v-btn
             class="text-textPrimary"
             to="/login"
