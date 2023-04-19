@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { useTheme } from 'vuetify'
+import { useTheme, useDisplay } from 'vuetify'
 import { SunFilledIcon, MoonFilledIcon } from 'vue-tabler-icons'
 import Logo from '@/layouts/full/logo/Logo.vue'
 
 const theme = useTheme()
+const { name } = useDisplay()
 
 function toggleTheme () {
   theme.global.name.value = theme.global.current.value.dark ? 'CustomLightTheme' : 'CustomDarkTheme'
@@ -25,6 +26,7 @@ function toggleTheme () {
         <div>
           <v-btn
             class="nav-theme-btn mr-5"
+            :class="{ 'theme-btn' : ['xs', 'sm'].includes(name) }"
             size="small"
             icon
             variant="flat"

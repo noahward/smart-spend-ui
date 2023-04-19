@@ -1,15 +1,16 @@
 <script setup lang="ts">
+import CoreValueCard from './CoreValueCard.vue'
 </script>
 
 <template>
-  <v-container class="py-16 h-100 d-flex align-center">
-    <v-row class="justify-center">
+  <v-container class="h-100 d-flex align-center flex-column">
+    <v-row class="justify-center w-100">
       <v-col
         cols="12"
         md="5"
-        class="d-flex align-center justify-center"
+        class="d-flex align-center justify-sm-center"
       >
-        <div class="mt-8 mt-lg-0">
+        <div class="mt-8 mt-lg-0 mobile-padding">
           <h1
             class="banner-title pt-5 font-weight-bold mobile-center text-textPrimary"
             data-aos="fade-up"
@@ -44,7 +45,7 @@
       <v-col
         cols="12"
         md="7"
-        class="landing-img pa-8"
+        class="landing-img pa-8 d-flex align-center"
       >
         <img
           src="@/assets/images/backgrounds/landing-bg.svg"
@@ -52,6 +53,16 @@
           data-aos="fade-up"
           data-aos-duration="1000"
         >
+      </v-col>
+    </v-row>
+    <v-row class="w-100 px-lg-10">
+      <v-col
+        v-for="i in 3"
+        :key="i"
+        cols="12"
+        md="4"
+      >
+        <CoreValueCard />
       </v-col>
     </v-row>
   </v-container>

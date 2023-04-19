@@ -27,7 +27,7 @@
   }
 
   .mobile-center {
-    @media screen and (max-width: 900px) {
+    @media screen and (max-width: 960px) {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -40,5 +40,11 @@
 
   .footer-img {
     max-width: 25px;
+  }
+
+  .mobile-padding {
+    @media screen and (max-width: 960px) {
+      padding-top: 3em;
+    }
   }
 }
