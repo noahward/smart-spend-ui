@@ -49,6 +49,8 @@
         <img
           src="@/assets/images/backgrounds/landing-bg.svg"
           alt="landing-background"
+          data-aos="fade-up"
+          data-aos-duration="1000"
         >
       </v-col>
     </v-row>
