@@ -11,11 +11,11 @@
       >
         <div class="mt-8 mt-lg-0">
           <h1
-            class="banner-title pt-5 font-weight-bold mobile-center"
+            class="banner-title pt-5 font-weight-bold mobile-center text-textPrimary"
             data-aos="fade-up"
             data-aos-duration="500"
           >
-            Budgeting, but without the hassle
+            Your dad's favourite budgeting app
           </h1>
           <p
             class="pt-8 pb-6 text-h5 font-weight-regular text-textMedium mobile-center"
