@@ -1,3 +1,44 @@
-.landing-wrapper {
+.landing-page {
+  .v-container {
+    max-width: 1200px !important;
+  }
 
+  .banner-title {
+    font-size: 36px;
+    line-height: 40px;
+  }
+
+  @media (min-width: 900px) {
+    .banner-title {
+      font-size: 54px;
+      line-height: 60px;
+    }
+  }
+
+  .btn-custom-lg {
+    height: 45px !important;
+    padding: 0 25px !important;
+  }
+
+  @media screen and (max-width: 600px) {
+    .m-btn-full {
+      width: 100%;
+    }
+  }
+
+  .mobile-center {
+    @media screen and (max-width: 900px) {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  .landing-img {
+    max-width: 600px;
+  }
+
+  .footer-img {
+    max-width: 25px;
+  }
 }
