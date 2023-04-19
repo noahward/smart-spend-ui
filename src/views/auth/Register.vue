@@ -29,9 +29,9 @@ import RegisterForm from '@/components/auth/RegisterForm.vue'
         cols="12"
         lg="5"
         xl="4"
-        class="d-flex align-center justify-center"
+        class="d-flex align-center justify-center h-100"
       >
-        <div class="mt-xl-0 mt-5 w-50 ">
+        <div class="mt-xl-0 mt-5 w-100 form-width">
           <div class="d-flex justify-center">
             <h2 class="text-h3 font-weight-bold mb-4">
               Register for an account

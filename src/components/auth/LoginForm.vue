@@ -94,7 +94,7 @@ function onSubmit (values: object) {
         class="mr-2"
         alt="google"
       >
-      <span class="d-sm-flex d-none ml-2 text-subtitle-1">Sign in with Google</span>
+      <span class="ml-2 text-subtitle-1">Sign in with Google</span>
     </v-btn>
   </div>
 </template>
