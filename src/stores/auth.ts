@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { camelizeKeys, decamelizeKeys } from 'humps'
 import { api } from '@/api'
 import { router } from '@/router'
-import type { User, UserData } from '@/types/user'
+import type { User } from '@/types/user'
 
 type UserState = {
   user: User | Record<string, never>;
@@ -24,7 +24,7 @@ export const useAuthStore = defineStore('auth', {
   },
   actions: {
     async login (userInfo: object) {
-      return api.post('/auth/login', decamelizeKeys(userInfo))
+      return api.post('/auth/token/login/', decamelizeKeys(userInfo))
         .then((response) => {
           this.user = camelizeKeys(response.data) as User
           localStorage.setItem('user', JSON.stringify(camelizeKeys(response.data)))
@@ -35,7 +35,7 @@ export const useAuthStore = defineStore('auth', {
         })
     },
     async register (userInfo: object) {
-      return api.post('/auth/register', decamelizeKeys(userInfo))
+      return api.post('/auth/users/', decamelizeKeys(userInfo))
         .then((response) => {
           this.user = camelizeKeys(response.data) as User
           localStorage.setItem('user', JSON.stringify(camelizeKeys(response.data)))
@@ -46,18 +46,11 @@ export const useAuthStore = defineStore('auth', {
         })
     },
     async logout () {
-      localStorage.removeItem('user')
-      this.user = {}
-      router.push('/login')
-    },
-    async updateUser (userInfo: object) {
-      return api.patch('/auth/user', decamelizeKeys(userInfo))
-        .then((response) => {
-          this.user.profile = camelizeKeys(response.data) as UserData
-          localStorage.setItem('user', JSON.stringify(this.user))
-        })
-        .catch((error) => {
-          throw error
+      return api.post('/auth/token/logout/')
+        .then(() => {
+          localStorage.removeItem('user')
+          this.user = {}
+          router.push('/login')
         })
     }
   }

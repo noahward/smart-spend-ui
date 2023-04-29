@@ -24,7 +24,7 @@ const authStore = useAuthStore()
         v-if="authStore.isAuthenticated"
         class="text-h6 ml-4 textPrimary"
       >
-        {{ authStore.user.profile.firstName }}
+        {{ authStore.user.firstName }}
       </h4>
       <div class="ml-auto">
         <v-btn

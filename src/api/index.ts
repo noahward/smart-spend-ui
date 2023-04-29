@@ -10,7 +10,7 @@ api.interceptors.request.use(
   config => {
     const authStore = useAuthStore()
     if (authStore.isAuthenticated) {
-      config.headers.Authorization = `Token ${authStore.user.token.key}`
+      config.headers.Authorization = `Token ${authStore.user.authToken}`
     }
     return config
   },
