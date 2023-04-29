@@ -16,7 +16,7 @@ export const useCategoryStore = defineStore('category', {
   },
   actions: {
     async getCategories () {
-      return api.get('/categories')
+      return api.get('/categories/')
         .then((response) => {
           this.categories = camelizeKeys(response.data) as Category[]
         })

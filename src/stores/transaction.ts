@@ -25,7 +25,7 @@ export const useTransactionStore = defineStore('transaction', {
   },
   actions: {
     async getTransactions () {
-      return api.get('/transactions')
+      return api.get('/transactions/')
         .then((response) => {
           this.transactions = camelizeKeys(response.data) as Transaction[]
         })
@@ -34,7 +34,7 @@ export const useTransactionStore = defineStore('transaction', {
         })
     },
     async addSingleTransaction (payload: TransactionCreate) {
-      return api.post('/transactions', decamelizeKeys(payload))
+      return api.post('/transactions/', decamelizeKeys(payload))
         .then((response) => {
           const accountStore = useAccountStore()
           const transaction = decamelizeKeys(response.data) as Transaction
@@ -49,7 +49,7 @@ export const useTransactionStore = defineStore('transaction', {
     async previewTransactionFile (file: File) {
       const formData = new FormData()
       formData.append('file', file)
-      return api.post('transaction-file-preview', formData, {
+      return api.post('/transaction-file-preview/', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -62,7 +62,7 @@ export const useTransactionStore = defineStore('transaction', {
       const formData = new FormData()
       formData.append('file', file)
       formData.append('map', JSON.stringify(map))
-      return api.post('transaction-file-upload', formData, {
+      return api.post('/transaction-file-upload/', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -90,7 +90,7 @@ export const useTransactionStore = defineStore('transaction', {
         })
     },
     async updateTransaction (transaction: TransactionUpdate) {
-      return api.patch(`/transactions/${transaction.id}`, decamelizeKeys(transaction))
+      return api.patch(`/transactions/${transaction.id}/`, decamelizeKeys(transaction))
         .then((response) => {
           const accountStore = useAccountStore()
           accountStore.getAccounts()
@@ -106,7 +106,7 @@ export const useTransactionStore = defineStore('transaction', {
         })
     },
     async deleteTransaction (transaction: Transaction) {
-      return api.delete(`/transactions/${transaction.id}`)
+      return api.delete(`/transactions/${transaction.id}/`)
         .then(() => {
           const accountStore = useAccountStore()
           accountStore.updateAccountBalance(transaction.account, transaction.amount, 'remove')

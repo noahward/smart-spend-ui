@@ -5,7 +5,6 @@ export type Transaction = {
   currencyCode: string;
   amount: number;
   dateClassified: string | null;
-  user: number;
   account: number;
   accountName: string;
   categoryName?: string;
@@ -14,6 +13,7 @@ export type Transaction = {
 export type TransactionCreate = {
   date: string | Date;
   description: string;
+  currencyCode: string;
   amount: number;
   account: number;
 }
@@ -22,6 +22,7 @@ export type TransactionUpdate = {
   id: number;
   date?: string;
   description?: string;
+  currencyCode?: string;
   amount?: number;
   account?: number;
   categoryName?: string;
@@ -31,6 +32,7 @@ export type TransactionAPIErrors = {
   date?: Array<string>;
   description?: Array<string>;
   amount?: Array<string>;
+  currencyCode?: Array<string>;
   account?: Array<string>;
   category?: Array<string>;
   file?: Array<string>;
