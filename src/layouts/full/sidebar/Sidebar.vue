@@ -35,11 +35,11 @@ const computedMenuItems = computed(() => {
     icon: BuildingBankIcon,
     to: '',
     children: [
-      {
+      ...accountStore.accounts.length !== 0 ? [{
         title: 'All Accounts',
         icon: PointIcon,
         to: '/accounts'
-      }
+      }] : []
     ]
   }
   accountsItem.children.push(...accountStore.accounts.map(obj => formatMenuItem(obj)))
