@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
+import { formatCurrency } from '@/helpers/formatCurrency'
 import { useAccountStore } from '@/stores/account'
 import { useTransactionStore } from '@/stores/transaction'
 import CardBase from '@/components/shared/CardBase.vue'
@@ -25,10 +26,12 @@ onMounted(() => {
         <CardBase variant="outlined">
           <template #header>
             <v-card-title
-              class="text-h5"
-              :class="accountStore.getTotalBalance >= 0 ? 'text-success' : 'text-error'"
+              v-for="bal, i in accountStore.getTotalBalance"
+              :key="i"
+              class="text-h5 my-2"
+              :class="bal >= 0 ? 'text-success' : 'text-error'"
             >
-              {{ accountStore.getTotalBalance.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) }}
+              {{ formatCurrency(bal, i) }}
             </v-card-title>
             <v-card-subtitle class="mt-1">
               All Accounts

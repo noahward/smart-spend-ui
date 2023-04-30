@@ -2,6 +2,7 @@
 import { useRoute } from 'vue-router'
 import { DotsIcon } from 'vue-tabler-icons'
 import { ref, watch, onMounted, computed } from 'vue'
+import { formatCurrency } from '@/helpers/formatCurrency'
 import { useAccountStore } from '@/stores/account'
 import { useTransactionStore } from '@/stores/transaction'
 import { router } from '@/router'
@@ -67,10 +68,10 @@ async function confirmDelete () {
               <div>
                 <v-card-title
                   v-if="selectedAccount"
-                  class="text-h5"
+                  class="text-h5 my-2"
                   :class="selectedAccount.balance >= 0 ? 'text-success' : 'text-error'"
                 >
-                  {{ selectedAccount.balance.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) }}
+                  {{ formatCurrency(selectedAccount.balance, selectedAccount.currencyCode) }}
                 </v-card-title>
                 <v-card-subtitle
                   v-if="selectedAccount"

@@ -11,9 +11,15 @@ export const useAccountStore = defineStore('account', {
   },
   getters: {
     getTotalBalance (state) {
-      return state.accounts
-        .map(acc => acc.balance)
-        .reduce((sum, balance) => sum + balance, 0)
+      return state.accounts.reduce((acc, account) => {
+        const { currencyCode, balance } = account
+        if (acc[currencyCode]) {
+          acc[currencyCode] += balance
+        } else {
+          acc[currencyCode] = balance
+        }
+        return acc
+      }, {} as Record<string, number>)
     },
     accountSelectOptions (state) {
       return state.accounts.map(account => account.name)
