@@ -186,7 +186,7 @@ function uploadFileTransactions (map: {[key: string]: string}) {
           <label for="file-input">
             <UploadIcon
               size="22"
-              class="pointer"
+              class="pointer text-primary"
             />
           </label>
           <input
@@ -198,7 +198,7 @@ function uploadFileTransactions (map: {[key: string]: string}) {
         <div>
           <PlusIcon
             size="22"
-            class="pointer ml-4"
+            class="pointer ml-4 text-primary"
             @click="dialogCreate = true"
           />
         </div>
@@ -211,6 +211,16 @@ function uploadFileTransactions (map: {[key: string]: string}) {
     :search="search"
     item-value="name"
   >
+    <template #no-data>
+      <tr class="bg-primary">
+        <td
+          colspan="100%"
+          class="text-center text-textPrimary"
+        >
+          No transactions to display!
+        </td>
+      </tr>
+    </template>
     <template #item="{ item }">
       <tr>
         <td>{{ formatDate(item.columns.date) }}</td>
