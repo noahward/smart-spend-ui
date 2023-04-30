@@ -24,10 +24,11 @@ const accountStore = useAccountStore()
 const createErrors = ref<AccountAPIErrors>({})
 
 const onSubmit = getSubmitFn(accountSchema, (values: any) => {
-  if (currencyOptions.indexOf(values.currencyCode) === -1) {
+  if (currencyOptions.indexOf(values.currencyCode.toUpperCase()) === -1) {
     createErrors.value.currencyCode = ['Invalid currency code']
     return
   }
+  values.currencyCode = values.currencyCode.toUpperCase()
   accountStore.createAccount(values)
     .then(() => {
       emit('closeDialog')
