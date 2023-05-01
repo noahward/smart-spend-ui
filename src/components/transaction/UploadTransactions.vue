@@ -41,7 +41,7 @@ const forexNeeded = computed(() => {
 
   const targetAcc = accounts.find(acc => acc.name === selectedAccount.value)
   if (!targetAcc) {
-    return true
+    return false
   }
 
   if (currencyArr.length === 1) {
