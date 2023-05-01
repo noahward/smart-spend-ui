@@ -77,7 +77,11 @@ async function confirmDelete () {
                   v-if="selectedAccount"
                   class="mt-1"
                 >
-                  {{ selectedAccount.kind[0].toUpperCase() + selectedAccount.kind.slice(1) }}
+                  <span>
+                    {{ selectedAccount.kind[0].toUpperCase() + selectedAccount.kind.slice(1) }}
+                  </span>
+                  <span class="mx-3">|</span>
+                  <span>{{ selectedAccount.currencyCode.toUpperCase() }}</span>
                 </v-card-subtitle>
               </div>
               <div>
