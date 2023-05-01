@@ -38,7 +38,6 @@ export const useTransactionStore = defineStore('transaction', {
         .then((response) => {
           const accountStore = useAccountStore()
           const transaction = decamelizeKeys(response.data) as Transaction
-          console.log(transaction)
           accountStore.updateAccountBalance(transaction.account, transaction.amount, 'add')
           this.transactions.push(transaction)
         })
@@ -61,7 +60,7 @@ export const useTransactionStore = defineStore('transaction', {
     async uploadTransactionFile (file: File, map: {[key: string]: string}) {
       const formData = new FormData()
       formData.append('file', file)
-      formData.append('map', JSON.stringify(map))
+      formData.append('map', JSON.stringify(decamelizeKeys(map)))
       return api.post('/transaction-file-upload/', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
