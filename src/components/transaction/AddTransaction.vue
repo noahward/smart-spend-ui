@@ -75,6 +75,7 @@ const onSubmit = getSubmitFn(transactionSchema, (values: any) => {
       </div>
       <div class="my-2">
         <ValidatedInputField
+          currency-info
           name="amount"
           kind="number"
           label="Amount"
