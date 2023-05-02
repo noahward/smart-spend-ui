@@ -1,0 +1,18 @@
+.upload-card {
+    background: rgb(var(--v-theme-primaryBorder));
+    color: rgb(var(--v-theme-textPrimary));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2em;
+    margin: 1em 0em;
+    height: 130px;
+    border-radius: 8px;
+
+    &:hover {
+        background: rgb(var(--v-theme-inputBorder));
+        cursor: pointer;
+    }
+}

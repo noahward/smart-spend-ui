@@ -8,7 +8,7 @@ import { useTransactionStore } from '@/stores/transaction'
 import CardBase from '@/components/shared/CardBase.vue'
 import AddTransaction from '@/components/transaction/AddTransaction.vue'
 import EditTransaction from '@/components/transaction/EditTransaction.vue'
-import UploadTransactions from '@/components/transaction/UploadTransactions.vue'
+import UploadTransactionsContainer from '@/components/transaction/UploadTransactionsContainer.vue'
 import type { Transaction } from '@/types/transaction'
 
 type PropTypes = {
@@ -70,7 +70,6 @@ const dialogDelete = ref(false)
 const dialogEdit = ref(false)
 
 const modifiedItem = ref()
-const selectedFile = ref(null)
 
 function editItem (item: Transaction) {
   modifiedItem.value = item
@@ -133,30 +132,6 @@ function closeCategorySelect (item: any) {
   item.raw.categoryName = editCategory.value.originalCategory
   editCategory.value = defaultEditCategory
 }
-
-function previewFile (event: any) {
-  selectedFile.value = event.target.files[0]
-  transactionStore.previewTransactionFile(event.target.files[0])
-    .then(() => {
-      dialogUpload.value = true
-    })
-    .catch((error) => {
-      console.error(error)
-    })
-}
-
-function uploadFileTransactions (map: {[key: string]: string}) {
-  if (selectedFile.value === null) {
-    return
-  }
-  return transactionStore.uploadTransactionFile(selectedFile.value, map)
-    .then(() => {
-      dialogUpload.value = false
-    })
-    .catch((error) => {
-      console.error(error)
-    })
-}
 </script>
 
 <template>
@@ -183,17 +158,11 @@ function uploadFileTransactions (map: {[key: string]: string}) {
     >
       <div class="pa-2 d-flex align-center justify-end">
         <div class="file-upload">
-          <label for="file-input">
-            <UploadIcon
-              size="22"
-              class="pointer text-primary"
-            />
-          </label>
-          <input
-            id="file-input"
-            type="file"
-            @change="previewFile"
-          >
+          <UploadIcon
+            size="22"
+            class="pointer text-primary"
+            @click="dialogUpload = true"
+          />
         </div>
         <div>
           <PlusIcon
@@ -273,22 +242,22 @@ function uploadFileTransactions (map: {[key: string]: string}) {
 
   <v-dialog
     v-model="dialogUpload"
-    width="600"
+    width="375"
     persistent
   >
     <CardBase>
       <template #header>
-        <v-card-title class="text-h5">
-          Upload Transactions
+        <v-card-title class="text-h5 d-flex justify-space-between align-center">
+          <span>Upload Transactions</span>
+          <XIcon
+            class="pointer"
+            size="22"
+            @click="dialogUpload = false"
+          />
         </v-card-title>
       </template>
       <template #content>
-        <UploadTransactions
-          :preview-data="transactionStore.previewData"
-          :account-name="accountName"
-          @submit-map="uploadFileTransactions"
-          @close-dialog="dialogUpload = false"
-        />
+        <UploadTransactionsContainer />
       </template>
     </CardBase>
   </v-dialog>
@@ -305,7 +274,10 @@ function uploadFileTransactions (map: {[key: string]: string}) {
       </template>
       <template #content>
         <div class="flex-column">
-          <AddTransaction @close-dialog="dialogCreate = false" />
+          <AddTransaction
+            :account-name="accountName"
+            @close-dialog="dialogCreate = false"
+          />
         </div>
       </template>
     </CardBase>

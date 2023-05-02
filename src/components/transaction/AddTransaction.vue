@@ -11,6 +11,8 @@ import ValidatedInputField from '@/components/shared/validators/ValidatedInputFi
 import ValidatedSelectField from '@/components/shared/validators/ValidatedSelectField.vue'
 import type { TransactionAPIErrors } from '@/types/transaction'
 
+defineProps<{ accountName?: string }>()
+
 const emit = defineEmits(['inFocus', 'closeDialog'])
 
 const transactionSchema = object({
@@ -31,6 +33,7 @@ const onSubmit = getSubmitFn(transactionSchema, (values: any) => {
   const selectedAcc = accounts.find(acc => acc.name === values.account)
   if (selectedAcc) {
     values.account = selectedAcc.id
+    values.currencyCode = selectedAcc.currencyCode
   } else {
     createErrors.value.account = ['Select an account']
     return
@@ -55,7 +58,7 @@ const onSubmit = getSubmitFn(transactionSchema, (values: any) => {
   <div class="flex-column">
     <Form
       :validation-schema="transactionSchema"
-      :initial-values="{ date: new Date() }"
+      :initial-values="{ date: new Date().toISOString().slice(0,10), account: accountName }"
       @submit="onSubmit"
     >
       <div class="my-2">
