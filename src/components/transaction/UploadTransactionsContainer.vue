@@ -21,6 +21,7 @@
     <v-card
       v-ripple.center
       flat
+      disabled
       class="upload-card"
     >
       <span class="text-h5 font-weight-bold">CSV</span>
