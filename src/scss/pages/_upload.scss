@@ -16,3 +16,7 @@
         cursor: pointer;
     }
 }
+
+.upload-card input[type="file"] {
+    display: none;
+}

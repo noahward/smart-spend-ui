@@ -69,6 +69,8 @@ const dialogUpload = ref(false)
 const dialogDelete = ref(false)
 const dialogEdit = ref(false)
 
+const dialogUploadWidth = ref(365)
+
 const modifiedItem = ref()
 
 function editItem (item: Transaction) {
@@ -131,6 +133,10 @@ async function confirmUpdateCategory (item: any) {
 function closeCategorySelect (item: any) {
   item.raw.categoryName = editCategory.value.originalCategory
   editCategory.value = defaultEditCategory
+}
+
+function changeUploadDialogWidth (newWidth: number) {
+  dialogUploadWidth.value = newWidth
 }
 </script>
 
@@ -242,7 +248,7 @@ function closeCategorySelect (item: any) {
 
   <v-dialog
     v-model="dialogUpload"
-    width="375"
+    :width="dialogUploadWidth"
     persistent
   >
     <CardBase>
@@ -257,7 +263,7 @@ function closeCategorySelect (item: any) {
         </v-card-title>
       </template>
       <template #content>
-        <UploadTransactionsContainer />
+        <UploadTransactionsContainer @change-width="changeUploadDialogWidth" />
       </template>
     </CardBase>
   </v-dialog>
