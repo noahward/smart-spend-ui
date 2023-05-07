@@ -39,7 +39,8 @@ const onSubmit = getSubmitFn(accountSchema, (values: any) => {
     const transaction = {
       date: new Date().toISOString().slice(0, 10),
       description: 'Manual Balance Update',
-      amount: values.balance - props.initialValues.balance,
+      currencyCode: props.initialValues.currencyCode,
+      amount: Math.round((values.balance - props.initialValues.balance) * 1e2) / 1e2,
       account: values.id
     }
     transactionStore.addSingleTransaction(transaction)
