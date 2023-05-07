@@ -2,13 +2,8 @@
 import { ref, computed } from 'vue'
 import { ExclamationCircleIcon, HelpIcon } from 'vue-tabler-icons'
 import { useAccountStore } from '@/stores/account'
+import { useTransactionStore } from '@/stores/transaction'
 import PreviewTable from '@/components/transaction/PreviewTable.vue'
-import type { AccountTransactionsPreview } from '@/types/file-preview'
-
-type PropTypes = {
-  previewData: AccountTransactionsPreview[],
-  accountName?: string
-}
 
 type AccountMapData = {
   targetAccountId: number,
@@ -21,7 +16,9 @@ type AccountMap = {
 
 const emit = defineEmits(['closeDialog', 'submitMap'])
 
-const props = defineProps<PropTypes>()
+const props = defineProps<{accountName?: string}>()
+
+const transactionStore = useTransactionStore()
 const { accountSelectOptions, accounts } = useAccountStore()
 
 const step = ref(0)
@@ -33,7 +30,7 @@ const handleExchangeRate = ref<'today' | 'transaction'>('today')
 const forexNeeded = computed(() => {
   const currencyArr: string[] = []
 
-  props.previewData[step.value].transactions.forEach((transaction) => {
+  transactionStore.previewData[step.value].transactions.forEach((transaction) => {
     if (!currencyArr.includes(transaction.currencyCode)) {
       currencyArr.push(transaction.currencyCode)
     }
@@ -53,11 +50,11 @@ const forexNeeded = computed(() => {
 })
 
 const isMultistep = computed(() => {
-  return props.previewData.length > 1
+  return transactionStore.previewData.length > 1
 })
 
 const fileAccountKind = computed(() => {
-  return props.previewData[step.value].kind || 'UNKNOWN'
+  return transactionStore.previewData[step.value].kind || 'UNKNOWN'
 })
 
 function nextStep () {
@@ -71,7 +68,7 @@ function nextStep () {
     return
   }
 
-  accountMap.value[props.previewData[step.value].id] = {
+  accountMap.value[transactionStore.previewData[step.value].id] = {
     targetAccountId: targetAcc.id,
     exchangeDate: handleExchangeRate.value
   }
@@ -84,9 +81,9 @@ function nextStep () {
 
 function previousStep () {
   step.value -= 1
-  const targetAcc = accounts.find(acc => acc.id === accountMap.value[props.previewData[step.value].id].targetAccountId)
+  const targetAcc = accounts.find(acc => acc.id === accountMap.value[transactionStore.previewData[step.value].id].targetAccountId)
   selectedAccount.value = targetAcc ? targetAcc.name : null
-  handleExchangeRate.value = accountMap.value[props.previewData[step.value].id].exchangeDate
+  handleExchangeRate.value = accountMap.value[transactionStore.previewData[step.value].id].exchangeDate
   accountError.value = null
 }
 
@@ -101,7 +98,7 @@ function onSubmit () {
     return
   }
 
-  accountMap.value[props.previewData[step.value].id] = {
+  accountMap.value[transactionStore.previewData[step.value].id] = {
     targetAccountId: targetAcc.id,
     exchangeDate: handleExchangeRate.value
   }
@@ -122,7 +119,7 @@ function onSubmit () {
     </span>
 
     <span class="text-13 mb-2 d-block text-textMedium">
-      {{ previewData[step].transactions.length }} transactions will be imported from
+      {{ transactionStore.previewData[step].transactions.length }} transactions will be imported from
       <b>{{ fileAccountKind }}</b>
       into:
     </span>
@@ -189,11 +186,11 @@ function onSubmit () {
         class="mb-4"
       >
         <v-card-text>
-          <PreviewTable :preview-data="previewData[step]" />
+          <PreviewTable :preview-data="transactionStore.previewData[step]" />
         </v-card-text>
       </v-card>
       <v-btn
-        v-if="isMultistep && step !== previewData.length - 1"
+        v-if="isMultistep && step !== transactionStore.previewData.length - 1"
         flat
         color="primary"
         @click="nextStep"

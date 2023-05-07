@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useTransactionStore } from '@/stores/transaction'
+import UploadTransactions from '@/components/transaction/UploadTransactions.vue'
 
-const emit = defineEmits(['changeWidth'])
+const emit = defineEmits(['changeWidth', 'closeDialog'])
+defineProps<{accountName?: string}>()
 
 const transactionStore = useTransactionStore()
 const selectedFile = ref(null)
 const loadingOfx = ref(false)
 const loadingCsv = ref(false)
+const previewStage = ref(false)
 
 function previewFile (event: any, fileType: string) {
   fileType === 'ofx' ? loadingOfx.value = true : loadingCsv.value = true
@@ -15,8 +18,23 @@ function previewFile (event: any, fileType: string) {
   transactionStore.previewTransactionFile(event.target.files[0])
     .then(() => {
       emit('changeWidth', 600)
+      previewStage.value = true
       loadingOfx.value = false
       loadingCsv.value = false
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+}
+
+function uploadFileTransactions (map: {[key: string]: string}) {
+  if (selectedFile.value === null) {
+    return
+  }
+  return transactionStore.uploadTransactionFile(selectedFile.value, map)
+    .then(() => {
+      emit('closeDialog')
+      emit('changeWidth', 365)
     })
     .catch((error) => {
       console.error(error)
@@ -25,7 +43,16 @@ function previewFile (event: any, fileType: string) {
 </script>
 
 <template>
-  <div class="d-flex flex-column">
+  <UploadTransactions
+    v-if="previewStage"
+    :account-name="accountName"
+    @submit-map="uploadFileTransactions"
+    @close-dialog="$emit('closeDialog')"
+  />
+  <div
+    v-else
+    class="d-flex flex-column"
+  >
     <label>
       <v-card
         v-ripple.center

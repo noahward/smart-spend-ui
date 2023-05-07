@@ -138,6 +138,13 @@ function closeCategorySelect (item: any) {
 function changeUploadDialogWidth (newWidth: number) {
   dialogUploadWidth.value = newWidth
 }
+
+function closeUploadDialog () {
+  dialogUpload.value = false
+  setTimeout(function () {
+    dialogUploadWidth.value = 365
+  }, 1000)
+}
 </script>
 
 <template>
@@ -258,12 +265,16 @@ function changeUploadDialogWidth (newWidth: number) {
           <XIcon
             class="pointer"
             size="22"
-            @click="dialogUpload = false"
+            @click="closeUploadDialog"
           />
         </v-card-title>
       </template>
       <template #content>
-        <UploadTransactionsContainer @change-width="changeUploadDialogWidth" />
+        <UploadTransactionsContainer
+          :account-name="accountName"
+          @change-width="changeUploadDialogWidth"
+          @close-dialog="closeUploadDialog"
+        />
       </template>
     </CardBase>
   </v-dialog>
