@@ -102,7 +102,10 @@ function sumArray (array: number[]) {
 </script>
 
 <template>
-  <v-card variant="outlined">
+  <v-card
+    variant="outlined"
+    class="h-100"
+  >
     <v-card-item>
       <div class="d-flex flex-column mb-5">
         <span class="text-h5 text-textPrimary">{{ kind.charAt(0).toUpperCase() + kind.slice(1) }} Transaction Categories</span>
