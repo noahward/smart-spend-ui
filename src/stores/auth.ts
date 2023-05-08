@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { camelizeKeys, decamelizeKeys } from 'humps'
-import { api } from '@/api'
+import { smartSpendAPI } from '@/apis/smart-spend-api'
 import { router } from '@/router'
 import type { User } from '@/types/user'
 
@@ -24,7 +24,7 @@ export const useAuthStore = defineStore('auth', {
   },
   actions: {
     async login (userInfo: object) {
-      return api.post('/auth/token/login/', decamelizeKeys(userInfo))
+      return smartSpendAPI.post('/auth/token/login/', decamelizeKeys(userInfo))
         .then((response) => {
           this.user = camelizeKeys(response.data) as User
           localStorage.setItem('user', JSON.stringify(camelizeKeys(response.data)))
@@ -35,7 +35,7 @@ export const useAuthStore = defineStore('auth', {
         })
     },
     async register (userInfo: object) {
-      return api.post('/auth/users/', decamelizeKeys(userInfo))
+      return smartSpendAPI.post('/auth/users/', decamelizeKeys(userInfo))
         .then((response) => {
           this.user = camelizeKeys(response.data) as User
           localStorage.setItem('user', JSON.stringify(camelizeKeys(response.data)))
@@ -46,7 +46,7 @@ export const useAuthStore = defineStore('auth', {
         })
     },
     async logout () {
-      return api.post('/auth/token/logout/')
+      return smartSpendAPI.post('/auth/token/logout/')
         .then(() => {
           localStorage.removeItem('user')
           this.user = {}

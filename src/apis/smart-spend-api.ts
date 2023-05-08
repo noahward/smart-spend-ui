@@ -2,11 +2,11 @@ import axios from 'axios'
 import { router } from '@/router'
 import { useAuthStore } from '@/stores/auth'
 
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL
+const smartSpendAPI = axios.create({
+  baseURL: import.meta.env.VITE_SMARTSPEND_API_BASE_URL
 })
 
-api.interceptors.request.use(
+smartSpendAPI.interceptors.request.use(
   config => {
     const authStore = useAuthStore()
     if (authStore.isAuthenticated) {
@@ -17,7 +17,7 @@ api.interceptors.request.use(
   error => { console.log('Error!'); return Promise.reject(error) }
 )
 
-api.interceptors.response.use(
+smartSpendAPI.interceptors.response.use(
   response => response,
   error => {
     if (error.response.status === 401 && router.currentRoute.value.meta.requiresAuth) {
@@ -32,10 +32,10 @@ api.interceptors.response.use(
 )
 
 if (import.meta.env.VITE_LOG_REQUESTS === 'true') {
-  api.interceptors.request.use(request => {
+  smartSpendAPI.interceptors.request.use(request => {
     console.log(`Starting request to ${request.url}:`, request)
     return request
   })
 }
 
-export { api }
+export { smartSpendAPI }

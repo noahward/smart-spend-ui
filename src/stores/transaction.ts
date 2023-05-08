@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { camelizeKeys, decamelizeKeys } from 'humps'
-import { api } from '@/api'
+import { smartSpendAPI } from '@/apis/smart-spend-api'
 import { useAccountStore } from '@/stores/account'
 import type { AccountTransactionsPreview } from '@/types/file-preview'
 import type { Transaction, TransactionCreate, TransactionUpdate } from '@/types/transaction'
@@ -25,7 +25,7 @@ export const useTransactionStore = defineStore('transaction', {
   },
   actions: {
     async getTransactions () {
-      return api.get('/transactions/')
+      return smartSpendAPI.get('/transactions/')
         .then((response) => {
           this.transactions = camelizeKeys(response.data) as Transaction[]
         })
@@ -34,7 +34,7 @@ export const useTransactionStore = defineStore('transaction', {
         })
     },
     async addSingleTransaction (payload: TransactionCreate) {
-      return api.post('/transactions/', decamelizeKeys(payload))
+      return smartSpendAPI.post('/transactions/', decamelizeKeys(payload))
         .then((response) => {
           const accountStore = useAccountStore()
           const transaction = decamelizeKeys(response.data) as Transaction
@@ -48,7 +48,7 @@ export const useTransactionStore = defineStore('transaction', {
     async previewTransactionFile (file: File) {
       const formData = new FormData()
       formData.append('file', file)
-      return api.post('/transaction-file-preview/', formData, {
+      return smartSpendAPI.post('/transaction-file-preview/', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -61,7 +61,7 @@ export const useTransactionStore = defineStore('transaction', {
       const formData = new FormData()
       formData.append('file', file)
       formData.append('map', JSON.stringify(decamelizeKeys(map)))
-      return api.post('/transaction-file-upload/', formData, {
+      return smartSpendAPI.post('/transaction-file-upload/', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -89,7 +89,7 @@ export const useTransactionStore = defineStore('transaction', {
         })
     },
     async updateTransaction (transaction: TransactionUpdate) {
-      return api.patch(`/transactions/${transaction.id}/`, decamelizeKeys(transaction))
+      return smartSpendAPI.patch(`/transactions/${transaction.id}/`, decamelizeKeys(transaction))
         .then((response) => {
           const accountStore = useAccountStore()
           accountStore.getAccounts()
@@ -105,7 +105,7 @@ export const useTransactionStore = defineStore('transaction', {
         })
     },
     async deleteTransaction (transaction: Transaction) {
-      return api.delete(`/transactions/${transaction.id}/`)
+      return smartSpendAPI.delete(`/transactions/${transaction.id}/`)
         .then(() => {
           const accountStore = useAccountStore()
           accountStore.updateAccountBalance(transaction.account, transaction.amount, 'remove')
