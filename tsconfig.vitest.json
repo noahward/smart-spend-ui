@@ -4,7 +4,7 @@
   "compilerOptions": {
     "ignoreDeprecations": "5.0",
     "composite": true,
-    "lib": [],
+    "lib": ["dom", "es2021"],
     "types": ["node", "jsdom"]
   }
 }
