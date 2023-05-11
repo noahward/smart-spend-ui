@@ -39,7 +39,6 @@ function onSubmit (values: object) {
     <ValidatedInputField
       name="email"
       kind="email"
-      :errors="registerErrors?.email"
     />
     <v-label class="text-subtitle-1 font-weight-semibold pb-2 text-lightText">
       First Name
@@ -47,7 +46,6 @@ function onSubmit (values: object) {
     <ValidatedInputField
       name="firstName"
       kind="text"
-      :errors="registerErrors?.firstName"
     />
     <v-label class="text-subtitle-1 font-weight-semibold pb-2 text-lightText">
       Last Name
@@ -55,7 +53,6 @@ function onSubmit (values: object) {
     <ValidatedInputField
       name="lastName"
       kind="text"
-      :errors="registerErrors?.lastName"
     />
     <v-label class="text-subtitle-1 font-weight-semibold pb-2 text-lightText">
       Password

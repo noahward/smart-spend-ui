@@ -38,7 +38,6 @@ function onSubmit (values: object) {
     <ValidatedInputField
       name="email"
       kind="email"
-      :errors="loginErrors?.email"
     />
     <v-label class="text-subtitle-1 font-weight-semibold pb-2 text-lightText">
       Password
@@ -46,17 +45,16 @@ function onSubmit (values: object) {
     <ValidatedInputField
       name="password"
       kind="password"
-      :errors="loginErrors?.nonFieldErrors"
     />
     <div
-      v-if="loginErrors?.detail"
+      v-if="loginErrors?.nonFieldErrors"
       class="d-flex align-center text-error mt-n4 mb-4"
     >
       <exclamation-circle-icon
         size="16"
         class="mr-1"
       />
-      <span class="text-caption">{{ loginErrors.detail }}</span>
+      <span class="text-caption">{{ loginErrors.nonFieldErrors }}</span>
     </div>
     <div class="mt-n4 mb-6">
       <RouterLink

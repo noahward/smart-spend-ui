@@ -17,22 +17,16 @@ const preferenceStore = usePreferenceStore()
       size="small"
       @click.stop="preferenceStore.toggleMiniSidebar"
     >
-      <Menu2Icon
-        size="20"
-        stroke-width="1.5"
-      />
+      <Menu2Icon size="20" />
     </v-btn>
     <v-btn
-      class="hidden-lg-and-up"
+      class="hidden-lg-and-up ml-2"
       icon
       variant="flat"
       size="small"
       @click.stop="preferenceStore.toggleSidebarDrawer"
     >
-      <Menu2Icon
-        size="20"
-        stroke-width="1.5"
-      />
+      <Menu2Icon size="20" />
     </v-btn>
   </v-app-bar>
 </template>

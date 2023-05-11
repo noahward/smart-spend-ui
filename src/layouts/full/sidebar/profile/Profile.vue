@@ -12,7 +12,6 @@ const authStore = useAuthStore()
     class="px-4 py-3 extra-box"
   >
     <div class="d-flex align-center hide-menu">
-      <!-- TODO: Replace this with store value -->
       <v-avatar size="40">
         <img
           src="@/assets/images/placeholders/user-1.jpg"

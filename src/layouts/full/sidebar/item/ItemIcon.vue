@@ -10,6 +10,5 @@ defineProps<PropTypes>()
   <component
     :is="icon"
     size="20"
-    stroke-width="1.5"
   />
 </template>
