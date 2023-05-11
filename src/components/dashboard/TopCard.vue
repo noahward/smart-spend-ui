@@ -6,11 +6,16 @@ type PropTypes = {
   icon: TablerIconComponent;
   title: string;
   value: number;
+  loading: boolean;
   number?: boolean;
   percent?: boolean;
 }
 
-withDefaults(defineProps<PropTypes>(), { number: false, percent: false })
+withDefaults(defineProps<PropTypes>(), {
+  number: false,
+  percent: false,
+  loading: false
+})
 </script>
 
 <template>
@@ -27,9 +32,16 @@ withDefaults(defineProps<PropTypes>(), { number: false, percent: false })
       class="text-h4 mt-4"
       :class="value >= 0 ? 'text-success' : 'text-error'"
     >
-      <span v-if="number">{{ formatCurrency(value) }}</span>
-      <span v-else-if="percent">%{{ (value * 100).toFixed(1) }}</span>
-      <span v-else>{{ value }}</span>
+      <v-progress-circular
+        v-if="loading"
+        indeterminate
+        color="secondary"
+      />
+      <div v-else>
+        <span v-if="number">{{ formatCurrency(value) }}</span>
+        <span v-else-if="percent">%{{ (value * 100).toFixed(0) }}</span>
+        <span v-else>{{ value }}</span>
+      </div>
     </div>
   </div>
 </template>

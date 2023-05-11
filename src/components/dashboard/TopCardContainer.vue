@@ -1,27 +1,29 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { BuildingBankIcon, OnetwotreeIcon, CreditCardIcon, MoneybagIcon, CalculatorIcon, CircleHalf2Icon } from 'vue-tabler-icons'
-import { useAccountStore } from '@/stores/account'
-import { useTransactionStore } from '@/stores/transaction'
+import { ref, computed } from 'vue'
+import { BuildingBankIcon, OnetwotreeIcon, CreditCardIcon, MoneybagIcon, CircleHalf2Icon } from 'vue-tabler-icons'
+import currencies from 'iso4217'
 import TopCard from './TopCard.vue'
+import type { Transaction } from '@/types/transaction'
 
-const accountStore = useAccountStore()
-const transactionStore = useTransactionStore()
+type propTypes = {
+  transactions: Transaction[];
+  loading: boolean;
+}
 
-const lastMonthNetAmount = computed(() => {
-  const today = new Date()
-  const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1)
-  const filteredTransactions = transactionStore.transactions.filter((transaction) =>
-    new Date(transaction.date).getFullYear() === lastMonth.getFullYear() &&
-    new Date(transaction.date).getMonth() === lastMonth.getMonth()
-  )
-  return filteredTransactions.reduce((sum, transaction) => sum + transaction.amount, 0)
-})
+defineEmits(['updateBaseCurrency'])
+const props = defineProps<propTypes>()
+
+const baseCurrency = ref('USD')
+
+const currencyOptions = Object.keys(currencies)
+  .map(key => currencies[key].Code)
+  .filter(code => code && code.length === 3)
+  .sort()
 
 const lastMonthNetSpent = computed(() => {
   const today = new Date()
   const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1)
-  const filteredTransactions = transactionStore.transactions.filter((transaction) =>
+  const filteredTransactions = props.transactions.filter((transaction) =>
     new Date(transaction.date).getFullYear() === lastMonth.getFullYear() &&
     new Date(transaction.date).getMonth() === lastMonth.getMonth() &&
     transaction.amount < 0
@@ -32,7 +34,7 @@ const lastMonthNetSpent = computed(() => {
 const lastMonthNetIncome = computed(() => {
   const today = new Date()
   const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1)
-  const filteredTransactions = transactionStore.transactions.filter((transaction) =>
+  const filteredTransactions = props.transactions.filter((transaction) =>
     new Date(transaction.date).getFullYear() === lastMonth.getFullYear() &&
     new Date(transaction.date).getMonth() === lastMonth.getMonth() &&
     transaction.amount > 0
@@ -44,7 +46,7 @@ const lastMonthTransactionCount = computed(() => {
   const today = new Date()
   const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1)
 
-  const filteredTransactions = transactionStore.transactions.filter((transaction) =>
+  const filteredTransactions = props.transactions.filter((transaction) =>
     new Date(transaction.date).getFullYear() === lastMonth.getFullYear() &&
     new Date(transaction.date).getMonth() === lastMonth.getMonth()
   )
@@ -53,14 +55,25 @@ const lastMonthTransactionCount = computed(() => {
 })
 
 const ratioClassifiedTransactions = computed(() => {
-  const numUnclassified = transactionStore.transactions
+  const numUnclassified = props.transactions
     .filter(transaction => transaction.categoryName === undefined)
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
     .length
 
-  const numClassified = transactionStore.transactions.length - numUnclassified
+  const numClassified = props.transactions.length - numUnclassified
 
+  if (props.transactions.length === 0) {
+    return 0
+  } else if (numUnclassified === 0) {
+    return 100
+  }
   return numClassified / numUnclassified
+})
+
+const sumTransactions = computed(() => {
+  return props.transactions
+    .map(transaction => transaction.amount)
+    .reduce((sum, amount) => sum + amount, 0)
 })
 
 const lastMonth = computed(() => {
@@ -81,7 +94,8 @@ const lastMonth = computed(() => {
       <TopCard
         number
         :icon="BuildingBankIcon"
-        :value="accountStore.getTotalBalance"
+        :value="sumTransactions"
+        :loading="loading"
         title="Net Worth"
       />
     </v-col>
@@ -93,20 +107,8 @@ const lastMonth = computed(() => {
     >
       <TopCard
         number
-        :icon="CalculatorIcon"
-        :value="lastMonthNetAmount"
-        :title="`${lastMonth} Net`"
-      />
-    </v-col>
-    <v-col
-      cols="12"
-      lg="2"
-      md="4"
-      sm="4"
-    >
-      <TopCard
-        number
         :icon="MoneybagIcon"
+        :loading="loading"
         :value="lastMonthNetIncome"
         :title="`${lastMonth} Inflow `"
       />
@@ -120,6 +122,7 @@ const lastMonth = computed(() => {
       <TopCard
         number
         :icon="CreditCardIcon"
+        :loading="loading"
         :value="lastMonthNetSpent"
         :title="`${lastMonth} Outflow`"
       />
@@ -132,6 +135,7 @@ const lastMonth = computed(() => {
     >
       <TopCard
         :icon="OnetwotreeIcon"
+        :loading="loading"
         :value="lastMonthTransactionCount"
         :title="`${lastMonth} Transactions`"
       />
@@ -145,9 +149,30 @@ const lastMonth = computed(() => {
       <TopCard
         percent
         :icon="CircleHalf2Icon"
+        :loading="loading"
         :value="ratioClassifiedTransactions"
-        title="Classified Transactions"
+        title="Categorized Transactions"
       />
+    </v-col>
+    <v-col
+      cols="12"
+      lg="2"
+      md="4"
+      sm="4"
+    >
+      <div class="d-flex flex-column align-center justify-center text-center rounded-md pa-6 bg-lightSecondary h-100">
+        <div class="text-h6 font-weight-bold text-textMedium mt-3">
+          Display Currency:
+        </div>
+        <v-autocomplete
+          v-model="baseCurrency"
+          variant="outlined"
+          density="compact"
+          :items="currencyOptions"
+          class="w-75 mt-4"
+          @update:model-value="$emit('updateBaseCurrency', baseCurrency)"
+        />
+      </div>
     </v-col>
   </v-row>
 </template>
