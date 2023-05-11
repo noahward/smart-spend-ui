@@ -65,7 +65,7 @@ const ratioClassifiedTransactions = computed(() => {
   if (props.transactions.length === 0) {
     return 0
   } else if (numUnclassified === 0) {
-    return 100
+    return 1
   }
   return numClassified / numUnclassified
 })

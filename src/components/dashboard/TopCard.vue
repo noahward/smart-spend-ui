@@ -39,7 +39,7 @@ withDefaults(defineProps<PropTypes>(), {
       />
       <div v-else>
         <span v-if="number">{{ formatCurrency(value) }}</span>
-        <span v-else-if="percent">%{{ (value * 100).toFixed(0) }}</span>
+        <span v-else-if="percent">{{ (value * 100).toFixed(0) }}%</span>
         <span v-else>{{ value }}</span>
       </div>
     </div>
