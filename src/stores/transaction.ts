@@ -21,6 +21,9 @@ export const useTransactionStore = defineStore('transaction', {
             return new Date(a.date).valueOf() - new Date(b.date).valueOf()
           })
       }
+    },
+    uniqueCurrencies (state) {
+      return [...new Set(state.transactions.map(transaction => transaction.currencyCode))]
     }
   },
   actions: {

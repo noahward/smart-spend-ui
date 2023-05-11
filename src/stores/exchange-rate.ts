@@ -42,6 +42,13 @@ export const useExchRateStore = defineStore('exchange-rate', {
         .catch((error) => {
           throw error
         })
+    },
+    refreshExchangeRates (uniqueCurrencies: string[], baseCurrency: string) {
+      const promises: Promise<any>[] = []
+      uniqueCurrencies.forEach(currencyCode => {
+        promises.push(this.getExchangeRate(currencyCode, baseCurrency))
+      })
+      return Promise.all(promises)
     }
   }
 })

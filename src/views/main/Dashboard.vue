@@ -15,7 +15,7 @@ import type { Transaction } from '@/types/transaction'
 
 const accountStore = useAccountStore()
 const transactionStore = useTransactionStore()
-const exchangeRateStore = useExchRateStore()
+const { exchangeRates, refreshExchangeRates } = useExchRateStore()
 
 const loading = ref(false)
 const baseCurrency = ref('USD')
@@ -25,18 +25,26 @@ const dialogAccount = ref(false)
 const dialogUploadWidth = ref(365)
 const convertedTransactions = ref<Transaction[]>([])
 
-function updateBaseCurrency (newBaseCurrency: string) {
+async function updateBaseCurrency (newBaseCurrency: string) {
   loading.value = true
   baseCurrency.value = newBaseCurrency
-  convertTransactionCurrencies(transactionStore.transactions, baseCurrency.value)
-  loading.value = false
+  return convertTransactionCurrencies(transactionStore.transactions, transactionStore.uniqueCurrencies, baseCurrency.value)
+    .then((response) => {
+      convertedTransactions.value = response
+    })
+    .finally(() => {
+      loading.value = false
+    })
 }
 
 onMounted(() => {
   loading.value = true
   transactionStore.getTransactions()
     .then(async () => {
-      convertedTransactions.value = convertTransactionCurrencies(transactionStore.transactions, baseCurrency.value)
+      convertTransactionCurrencies(transactionStore.transactions, transactionStore.uniqueCurrencies, baseCurrency.value)
+        .then((response) => {
+          convertedTransactions.value = response
+        })
     })
     .catch((error) => {
       console.error(error)
@@ -46,26 +54,19 @@ onMounted(() => {
     })
 })
 
-function convertTransactionCurrencies (transactions: Transaction[], baseCurrency: string) {
-  refreshExchangeRates(transactions, baseCurrency)
-
-  return transactions.map((transaction) => {
-    const exchangeObj = exchangeRateStore.exchangeRates.find((rate) => rate.from === transaction.currencyCode)
-    if (exchangeObj) {
-      transaction.amount = transaction.amount * exchangeObj.exchangeRate
-      transaction.currencyCode = exchangeObj.to
-    }
-    return transaction
-  })
-}
-
-function refreshExchangeRates (transactions: Transaction[], baseCurrency: string) {
-  const distinctCurrencyCodes = [...new Set(transactions.map(obj => obj.currencyCode))]
-  const promises: Promise<any>[] = []
-  distinctCurrencyCodes.forEach(code => {
-    promises.push(exchangeRateStore.getExchangeRate(code, baseCurrency))
-  })
-  return Promise.all(promises)
+async function convertTransactionCurrencies (transactions: Transaction[], uniqueCurrencies: string[], baseCurrency: string) {
+  return refreshExchangeRates(uniqueCurrencies, baseCurrency)
+    .then(() => {
+      const transactionsClone = transactions.map(a => ({ ...a }))
+      return transactionsClone.map((transaction) => {
+        const exchangeObj = exchangeRates.find((rate) => rate.from === transaction.currencyCode && rate.to === baseCurrency)
+        if (exchangeObj) {
+          transaction.amount = transaction.amount * exchangeObj.exchangeRate
+          transaction.currencyCode = exchangeObj.to
+        }
+        return transaction
+      })
+    })
 }
 
 function changeUploadDialogWidth (newWidth: number) {
