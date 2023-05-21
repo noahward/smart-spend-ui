@@ -11,6 +11,10 @@
 .v-field {
     font-size: 14px;
     color:  rgba(var(--v-theme-textPrimary));
+    
+    .v-field-label {
+        color: rgba(var(--v-theme-textMedium)) !important;
+    }
 }
 
 // select outlined

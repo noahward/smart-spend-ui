@@ -1,6 +1,6 @@
 html {
     .bg-success {
-        color: white !important;
+        color: $white !important;
     }
 
     .bg-primary {
@@ -16,12 +16,13 @@ html {
     }
 }
 
-.border,
-.v-divider {
-    border-color: rgba(var(--v-border-color), 1) !important;
+.border {
+    border-color: rgba(var(--v-theme-inputBorder), 1) !important;
 }
 
-
+.v-divider {
+    border-color: rgba(var(--v-theme-textMedium)) !important;
+}
 
 .avtar-border {
     border: 2px solid rgb(var(--v-theme-surface)) !important;
