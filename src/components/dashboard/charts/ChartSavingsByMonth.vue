@@ -121,9 +121,11 @@ function computeCategories (numMonths: number) {
         <span class="text-h5 text-textPrimary">Monthly Inflow and Outflow</span>
         <span class="text-13 mt-2 text-textSecondary">Net Worth</span>
         <span
+          v-for="balance in accountStore.getTotalBalance"
+          :key="balance"
           class="text-h4"
-          :class="accountStore.getTotalBalance >= 0 ? 'text-success' : 'text-error'"
-        >{{ formatCurrency(accountStore.getTotalBalance) }}</span>
+          :class="balance >= 0 ? 'text-success' : 'text-error'"
+        >{{ formatCurrency(balance) }}</span>
       </div>
       <v-card-text>
         <apexchart
