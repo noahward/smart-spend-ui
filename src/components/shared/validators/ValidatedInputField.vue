@@ -90,18 +90,26 @@ function isNumber (evt: KeyboardEvent) {
     </v-text-field>
     <div
       v-if="errorMessage || errors.length !== 0"
-      class="d-flex align-center text-error mt-n4 mb-4"
+      class="d-flex text-error mt-n4 mb-4 flex-column"
     >
-      <exclamation-circle-icon
-        size="16"
-        class="mr-1"
-      />
-      <span class="text-caption">{{ errorMessage }}</span>
-      <span
+      <div v-if="errorMessage">
+        <exclamation-circle-icon
+          size="16"
+          class="mr-1"
+        />
+        <span class="text-caption">{{ errorMessage }}</span>
+      </div>
+      <div
         v-for="err in errors"
         :key="err"
-        class="text-caption"
-      >{{ err }}</span>
+        class="d-flex align-center"
+      >
+        <exclamation-circle-icon
+          size="16"
+          class="mr-1"
+        />
+        <span class="text-caption">{{ err }}</span>
+      </div>
     </div>
   </div>
 </template>

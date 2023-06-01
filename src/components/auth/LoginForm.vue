@@ -3,7 +3,6 @@ import { ref } from 'vue'
 import { Form } from 'vee-validate'
 import { camelizeKeys } from 'humps'
 import { object, string } from 'yup'
-import { ExclamationCircleIcon } from 'vue-tabler-icons'
 import { useAuthStore } from '@/stores/auth'
 import ValidatedInputField from '@/components/shared/validators/ValidatedInputField.vue'
 import type { UserAPIErrors } from '@/types/user'
@@ -17,11 +16,15 @@ const userSchema = object({
 
 const authStore = useAuthStore()
 const loginErrors = ref<UserAPIErrors>()
+const loadingLogin = ref(false)
 
 function onSubmit (values: object) {
   authStore.login(values)
     .catch((error) => {
       loginErrors.value = camelizeKeys(error.response.data)
+    })
+    .finally(() => {
+      loadingLogin.value = false
     })
 }
 </script>
@@ -38,6 +41,7 @@ function onSubmit (values: object) {
     <ValidatedInputField
       name="email"
       kind="email"
+      :errors="loginErrors?.email"
     />
     <v-label class="text-subtitle-1 font-weight-semibold pb-2 text-lightText">
       Password
@@ -45,17 +49,8 @@ function onSubmit (values: object) {
     <ValidatedInputField
       name="password"
       kind="password"
+      :errors="loginErrors?.nonFieldErrors"
     />
-    <div
-      v-if="loginErrors?.nonFieldErrors"
-      class="d-flex align-center text-error mt-n4 mb-4"
-    >
-      <exclamation-circle-icon
-        size="16"
-        class="mr-1"
-      />
-      <span class="text-caption">{{ loginErrors.nonFieldErrors }}</span>
-    </div>
     <div class="mt-n4 mb-6">
       <RouterLink
         to=""
@@ -71,7 +66,15 @@ function onSubmit (values: object) {
       type="submit"
       flat
     >
-      Sign In
+      <v-progress-circular
+        v-if="loadingLogin"
+        indeterminate
+        :size="25"
+        :width="3"
+      />
+      <div v-else>
+        Sign In
+      </div>
     </v-btn>
   </Form>
   <div class="d-flex align-center text-center my-5">
